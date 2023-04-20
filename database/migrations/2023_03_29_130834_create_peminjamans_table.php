@@ -1,0 +1,41 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('peminjamans', function (Blueprint $table) {
+            $table->id();
+            $table->integer('nip');
+            $table->string('nama_guru');
+            $table->string('nama_barang');
+            $table->date('tgl_peminjaman');
+            $table->integer('jml_barang_dipinjam');
+            $table->integer('id_barang');
+            $table->enum('status_peminjaman',['kembali','dipinjam','rusak']);
+            $table->string('keterangan');
+            $table->string('kategori_barang');
+            $table->string('ruangan');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('peminjamans');
+    }
+};
