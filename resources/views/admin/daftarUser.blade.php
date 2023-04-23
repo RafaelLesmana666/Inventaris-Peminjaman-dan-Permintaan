@@ -27,7 +27,7 @@
     </div>
 </div>
   <div class="ml-10 mt-9">
-    <span class="text-2xl font-semibold mb-7">Daftar Barang - Inventaris</span>
+    <span class="text-2xl font-semibold mb-7">Daftar User</span>
     <div class="flex gap-6 mt-12 ">
         <form action="/inventaris/cari" method="GET">
             @csrf
@@ -76,12 +76,12 @@
             <th class="px-4 rounded-tr-lg"></th>
          </thead>
          @foreach( $user as $p)
-         <tbody class="bg-gray-200 text-center">
-            <td class="px-4 w-1 overflow-hidden whitespace-nowrap text-ellipsis text-left inline-block">{{ $p->username }}</td>
-            <td class="px-8">{{ $p->nip }}</td>
-            <td class="px-8 text-left">{{ $p->email }}</td>
-            <td class="px-8">{{ $p->created_at->toDateString() }}</td>
-            <td class="px-4">{{ $p->role }}</td>
+         <tbody class="bg-gray-200">
+            <td class="px-4 py-2 w-72 overflow-hidden whitespace-nowrap text-ellipsis text-left inline-block">{{ $p->username }}</td>
+            <td class="px-8 text-center">{{ $p->nip }}</td>
+            <td class="px-8 w-80 overflow-hidden whitespace-nowrap text-ellipsis text-left inline-block">{{ $p->email }}</td>
+            <td class="px-8 text-center">{{ $p->created_at->toDateString() }}</td>
+            <td class="px-4 text-center">{{ $p->role }}</td>
             <td class="px-4"><a href="">...</a></td>
          </tbody>
          @endforeach

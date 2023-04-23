@@ -35,13 +35,19 @@ class PeminjamanController extends Controller
         return view('admin.history.peminjaman',['peminjaman' => $cari]);
     }
 
-    public function pdf(Request $request){
-        $data = $request->validate([
-            'bulan' => 'required'
-        ]);
-        
-        if ($data = 1){
+    // public function store(Request $request){
+    //     $data = $request->validate([
+    //        'ruangan' => 'required',
+    //        'nama_guru' => 'required',
+    //        'nama_barang' => 'required',
+    //        'jml_barang_dipinjam' => 'required',
+    //        'keterangan' => 'required' 
+    //     ]);
+
+    //     $cekBarang = Barang::all();
+    //     $guru = $data['nama_guru'];
+    //     $cekGuru = User::where('')
             
-        }
-    }
+    //     }
+    // }
 }

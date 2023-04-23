@@ -2,21 +2,21 @@
 @section('content')
 <div id="modal" class="bg-black/50 z-10 w-full h-full absolute" style="display: none">
     <div class="w-1/3 h-9/12 pb-10 pt-4 bg-white absolute left-1/3 mt-8 rounded-xl">
-        <form method="POST" action="/nonInventaris" class="grid pl-10 gap-2">
+        <form method="POST" action="/nonInventaris" class="grid pl-10 gap-1.5">
             @csrf
             <h3 class="text-lg my-4 font-semibold">Tambah Barang</h3>
             <label for="nama_barang" class="text-gray-400">Nama Barang</label>
-                <input type="text" name="nama_barang" class="border border-gray-300 w-96 h-7 rounded-lg">
+                <input type="text" name="nama_barang" class="border border-gray-300 w-96 h-7 rounded-lg px-3">
             <label for="merk_barang" class="text-gray-400">Merk Barang</label>
-                <input type="text" name="merk_barang" class="border border-gray-300 w-96 h-7 rounded-lg">
+                <input type="text" name="merk_barang" class="border border-gray-300 w-96 h-7 rounded-lg px-3">
             <label for="jml_barang" class="text-gray-400">Jumlah Barang</label>
-                <input type="text" name="jml_barang" class="border border-gray-300 w-96 h-7 rounded-lg">
+                <input type="number" name="jml_barang" class="border border-gray-300 w-96 h-7 rounded-lg px-3">
             <label for="kategori_barang" class="text-gray-400">Kategori Barang</label>
-                <select name="kategori_barang" class="border border-gray-300 w-96 h-7 rounded-lg">
+                <select name="kategori_barang" class="border border-gray-300 w-96 h-10 cursor-pointer rounded-lg px-3">
                     <option value="alat_tulis">Alat Tulis</option>
                 </select>
-            <label for="spesifikasi" class="text-gray-400">Spesifikasi Barang</label>
-                <textarea name="kondisi_barang" class="border border-gray-300 w-96 h-12 rounded-lg mb-10 resize-none"></textarea>
+            <label for="kondisi_barang" class="text-gray-400">Spesifikasi Barang</label>
+                <textarea name="kondisi_barang" class="border border-gray-300 w-96 h-24 rounded-lg mb-4 resize-none p-2"></textarea>
             <div class="flex gap-56">
                 <a class="text-red-500 cursor-pointer" onclick="Open('modal')">Kembali</a>
                 <button type="submit" class="w-24 h-8 text-center bg-blue-500 text-white rounded-2xl">Tambah</button>
@@ -80,7 +80,7 @@
            <td>{{ $p->merk_barang }}</td>
            <td>{{ $p->kategori_barang }}</td>
            <td>{{ $p->jml_barang }}</td>
-           <td class="text-left pl-8">{{ $p->kondisi_barang }}</td>
+           <td class="text-left pl-4 w-80 overflow-hidden whitespace-nowrap text-ellipsis inline-block pt-2">{{ $p->kondisi_barang }}</td>
            <td><a href="">...</a></td>
         </tbody>
         @endforeach

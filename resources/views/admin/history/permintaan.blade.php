@@ -15,7 +15,7 @@
                         <span class="w-4 rounded-3xl border border-gray-400 text-center cursor-pointer" onClick='increaseCount(event, this)'>+</span>
                     </div>
                 </div>
-            <label for="keterangan" class="text-gray-400">Alasan Meminjam</label>
+            <label for="keterangan" class="text-gray-400">Alasan Meminta</label>
                 <textarea name="keterangan" class="border border-gray-300 w-96 h-12 rounded-lg mb-10 resize-none"></textarea>
             <div class="flex gap-48">
                 <a class="text-red-500 cursor-pointer" onclick="Open('modal')">Kembali</a>
@@ -89,8 +89,8 @@
             <th class="px-4 py-2 rounded-tl-lg">Nama Peminta</th>
             <th class="px-8">Barang Diminta</th>
             <th class="px-8">Tanggal Diminta</th>
-            <th class="pl-8 pr-60 rounded-tr-lg">Alasan Permintaan</th>
-            <th class="px"></th>
+            <th class="pl-8 pr-60">Alasan Permintaan</th>
+            <th class="px-4 rounded-tr-lg"></th>
          </thead>
          @foreach( $permintaan as $p)
          <tbody class="bg-gray-200">
