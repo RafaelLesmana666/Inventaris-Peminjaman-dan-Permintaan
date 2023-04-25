@@ -101,7 +101,7 @@
                     <td class="px-8">{{ $p->nama_guru }}</td>
                     <td class="px-8">{{ $p->nama_barang}}</td>
                     @if($p->status_peminjaman == 'kembali')
-                    <td class="px-8"><div class=" text-center mb-1 py-1 bg-green-200 text-green-400 rounded-2xl">Kembali</div></td>
+                    <td class="px-8"><div class=" text-center mb-1 py-1 px-4 bg-green-200 text-green-400 rounded-2xl">Kembali</div></td>
                     @else
                     <td class="px-8"><div class="px-4 mb-1 py-1 bg-blue-200 text-blue-400 rounded-2xl">Dipinjamkan</div></td>
                     @endif

@@ -15,6 +15,7 @@ class Peminjaman extends Model
         'nama_guru',
         'nama_barang',
         'tgl_peminjaman',
+        'tgl_kembali',
         'jml_barang_dipinjam',
         'id_barang',
         'status_peminjaman',

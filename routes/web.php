@@ -29,6 +29,8 @@ Route::post('logout',[LoginController::class, 'logout']);
 Route::get('/admin',[PeminjamanController::class, 'index']);
 Route::get('/peminjaman',[PeminjamanController::class, 'historyPeminjaman']);
 Route::get('/peminjaman/cari',[PeminjamanController::class, 'search']);
+Route::post('/peminjaman',[PeminjamanController::class, 'store']);
+Route::post('/dikembalikan/{id}',[PeminjamanController::class, 'kembali']);
 
 Route::get('/permintaan',[PermintaanController::class, 'index']);
 
