@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use \PDF;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Barang;
@@ -36,6 +37,17 @@ class PeminjamanController extends Controller
 
         $cari = Peminjaman::where('nama_guru',$search)->simplePaginate(5);
         return view('admin.history.peminjaman',['peminjaman' => $cari]);
+    }
+    
+    public function print(Request $request){
+        $data = $request->validate([
+            'bulan' => 'required',
+        ]);
+        
+        $bulan = $data['bulan'];
+        $filter = Peminjaman::whereMonth('tgl_peminjaman',$bulan)->get();
+        $cetak = PDF::loadview('admin.history.PDFpeminjaman',['bulan' => $filter]);
+        return $cetak->stream();
     }
 
     public function store(Request $request){
