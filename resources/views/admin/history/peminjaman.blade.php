@@ -4,16 +4,17 @@
 
 <div id="modal" class="bg-black/50 z-10 w-full h-full absolute" style="display: none">
     <div class="w-1/3 h-9/12 pb-10 pt-4 bg-white absolute left-1/3 mt-8 rounded-xl">
-        <form method="POST" action="/peminjaman" class="grid pl-10 gap-2">
+        <form method="POST" action="/peminjaman" class="grid pl-10 gap-2" autocomplete="off">
             @csrf
             <h3 class="text-lg my-4 font-semibold">Peminjaman Barang</h3>
             <label for="ruangan" class="text-gray-400">Ruang peminjam</label>
-                <input type="number" name="ruangan" class="border border-gray-300 w-96 h-7 rounded-lg p-4">
+                <input type="number" name="ruangan" class="border border-gray-300 w-96 h-7 rounded-lg p-2">
             <label for="nama_guru" class="text-gray-400">Nama Peminjam</label>
-                <input type="text" name="nama_guru" class="border border-gray-300 w-96 h-7 rounded-lg p-4">
+                <input type="text" name="nama_guru" class="border border-gray-300 w-96 h-7 rounded-lg p-2">
+                {{-- <input type="date" name="tgl_peminjaman"> --}}
             <label for="nama_barang" class="text-gray-400">Barang apa yang dipinjam? (Jumlah - Barang)</label>
                 <div class="flex">
-                    <input type="text" name="nama_barang" class="border border-gray-300 w-72 h-7 rounded-lg p-4">
+                    <input type="text" name="nama_barang" class="border border-gray-300 w-72 h-7 rounded-lg p-2">
                     <div class="flex justify-center ml-3">
                         <span class="w-4 rounded-3xl border border-gray-400 text-center cursor-pointer" onClick='decreaseCount(event, this)'>-</span>
                         <input type="number" name="jml_barang_dipinjam" placeholder="0" class="w-12 text-center ml-4">
@@ -110,32 +111,41 @@
             <td>{{ $p->nama_barang }}</td>
             <td>{{ $p->tgl_peminjaman->toDateString() }}</td>
             <td>{{ $p->tgl_kembali }}</td>
-            @if($p->status_peminjaman == 'kembali')
+            @if( $p->status_peminjaman == 'kembali' )
             <td class="px-8 py-3 w-48"><div class="py-1 bg-green-200 text-green-400 rounded-2xl">Kembali</div></td>
             <td class="px-8">
-                <a onclick="Open('detail')" class="cursor-pointer">...</a>
-                <div id="detail" class="bg-white absolute w-40 h-10 right-12 rounded-xl" style="display: none">
-                    <div class="flex flex-col text-left">
-                        <a href="" class="pt-2 pl-12">&#10068;Detail</a>
-                    </div>
-                </div>
+                <div class="group inline-block mt-[7px]">
+                    <button class="outline-none focus:outline-none rounded-xl flex items-center min-w-32">
+                      <span class="pr-1 flex-1">...</span>
+                    </button>
+                    <ul
+                      class="bg-white border rounded-xl transform scale-0 group-hover:scale-100 absolute
+                    transition duration-150 ease-in-out origin-top min-w-32 right-10"
+                    >
+                      <div class="rounded-xl px-12 py-1 cursor-pointer hover:bg-gray-300 rounded-xl"><a href="">Detail</a></div>
+                    </ul>
+                  </div>
             </td>
             @else
             <td class="px-8 py-3"><div class="px-4 py-1 bg-blue-200 text-blue-400 rounded-2xl">Dipinjamkan</div></td>
             <td class="px-8 pb-3">
-                <a onclick="Open('statuspinjam')" class="cursor-pointer pb-2">...</a>
-                <div id="statuspinjam" class="bg-white absolute w-40 h-16 right-12 rounded-xl" style="display: none">
-                    <div class="flex flex-col">
-                        <form method="post" action="/dikembalikan/{{ $p->id }}">
+                <div class="group inline-block mt-[7px]">
+                    <button class="outline-none focus:outline-none rounded-xl flex items-center min-w-32">
+                      <span class="pr-1 flex-1">...</span>
+                    </button>
+                    <div
+                      class="bg-white border rounded-xl transform scale-0 group-hover:scale-100 absolute
+                    transition duration-150 ease-in-out origin-top min-w-32 right-12"
+                    >
+                      <div class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100 rounded-t-xl"><a href="">Detail</a></div>
+                      <form method="post" action="/dikembalikan/{{ $p->id }}">
                         @csrf
-                        <button class="text-green-300 pt-1 px-7 hover:bg-green-300 hover:text-white rounded-t-xl">Dikembalikan</button>
-                        </form>
-                        <hr>
-                        <a href="detail/id" class="px-2 pt-1 text-sm hover:bg-gray-300 h-9 rounded-b-xl"><span class="text-xs pr-1">&#10068;</span>Detail</a>
+                        <button class="text-green-300 pt-1 px-7 hover:bg-green-300 hover:text-white rounded-b-xl">Dikembalikan</button>
+                    </form>
                     </div>
-                </div>
+                  </div>
             </td>
-            @endif
+            @endif 
          </tbody>
          @endforeach
     </table>

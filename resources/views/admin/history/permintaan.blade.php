@@ -2,13 +2,13 @@
 @section('content')
 <div id="modal" class="bg-black/50 z-10 w-full h-full absolute" style="display: none">
     <div class="w-1/3 h-9/12 pb-10 pt-4 bg-white absolute left-1/3 mt-8 rounded-xl">
-        <form method="POST" action="" class="grid pl-10 gap-2">
+        <form method="POST" action="" class="grid pl-10 gap-2" autocomplete="off">
             <h3 class="text-lg my-4 font-semibold">Permintaan Barang</h3>
             <label for="nama_guru" class="text-gray-400">Nama Peminta</label>
-                <input type="text" name="nama_guru" class="border border-gray-300 w-96 h-7 rounded-lg">
+                <input type="text" name="nama_guru" class="border border-gray-300 w-96 h-7 rounded-lg p-2">
             <label for="nama_barang" class="text-gray-400">Barang apa yang dipinjam? (Jumlah - Barang)</label>
                 <div class="flex">
-                    <input type="text" name="nama_barang" class="border border-gray-300 w-72 h-7 rounded-lg">
+                    <input type="text" name="nama_barang" class="border border-gray-300 w-72 h-7 rounded-lg p-2">
                     <div class="flex justify-center ml-3">
                         <span class="w-4 rounded-3xl border border-gray-400 text-center cursor-pointer" onClick='decreaseCount(event, this)'>-</span>
                         <input type="text" name="jml_barang_diminta" placeholder="0" class="w-12 text-center mx-2">
@@ -16,8 +16,8 @@
                     </div>
                 </div>
             <label for="keterangan" class="text-gray-400">Alasan Meminta</label>
-                <textarea name="keterangan" class="border border-gray-300 w-96 h-12 rounded-lg mb-10 resize-none"></textarea>
-            <div class="flex gap-48">
+                <textarea name="keterangan" class="border border-gray-300 w-96 h-24 rounded-lg mb-6 resize-none p-2"></textarea>
+            <div class="flex gap-56">
                 <a class="text-red-500 cursor-pointer" onclick="Open('modal')">Kembali</a>
                 <button type="submit" class="w-24 h-8 text-center bg-blue-500 text-white rounded-2xl">Tambah</button>
             </div>

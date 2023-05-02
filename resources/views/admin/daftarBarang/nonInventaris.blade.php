@@ -2,17 +2,17 @@
 @section('content')
 <div id="modal" class="bg-black/50 z-10 w-full h-full absolute" style="display: none">
     <div class="w-1/3 h-9/12 pb-10 pt-4 bg-white absolute left-1/3 mt-8 rounded-xl">
-        <form method="POST" action="/nonInventaris" class="grid pl-10 gap-1.5">
+        <form method="POST" action="/nonInventaris" class="grid pl-10 gap-1.5" autocomplete="off">
             @csrf
             <h3 class="text-lg my-4 font-semibold">Tambah Barang</h3>
             <label for="nama_barang" class="text-gray-400">Nama Barang</label>
-                <input type="text" name="nama_barang" class="border border-gray-300 w-96 h-7 rounded-lg px-3">
+                <input type="text" name="nama_barang" class="border border-gray-300 w-96 h-7 rounded-lg p-2">
             <label for="merk_barang" class="text-gray-400">Merk Barang</label>
-                <input type="text" name="merk_barang" class="border border-gray-300 w-96 h-7 rounded-lg px-3">
+                <input type="text" name="merk_barang" class="border border-gray-300 w-96 h-7 rounded-lg p-2">
             <label for="jml_barang" class="text-gray-400">Jumlah Barang</label>
-                <input type="number" name="jml_barang" class="border border-gray-300 w-96 h-7 rounded-lg px-3">
+                <input type="number" name="jml_barang" class="border border-gray-300 w-96 h-7 rounded-lg p-2">
             <label for="kategori_barang" class="text-gray-400">Kategori Barang</label>
-                <select name="kategori_barang" class="border border-gray-300 w-96 h-10 cursor-pointer rounded-lg px-3">
+                <select name="kategori_barang" class="border border-gray-300 w-96 h-10 cursor-pointer rounded-lg p-2">
                     <option value="alat_tulis">Alat Tulis</option>
                 </select>
             <label for="kondisi_barang" class="text-gray-400">Spesifikasi Barang</label>

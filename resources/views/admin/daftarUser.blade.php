@@ -2,7 +2,7 @@
 @section('content')
 <div id="modal" class="bg-black/50 z-10 w-full h-full absolute" style="display: none">
     <div class="w-1/3 h-9/12 pb-10 pt-4 bg-white absolute left-1/3 mt-8 rounded-xl">
-        <form method="POST" action="/tambahUser" class="grid pl-10 gap-2">
+        <form method="POST" action="/tambahUser" class="grid pl-10 gap-2" autocomplete="off">
             @csrf
             <h3 class="text-lg my-1 font-semibold">Tambah User</h3>
             <label for="username" class="text-gray-400">Username</label>

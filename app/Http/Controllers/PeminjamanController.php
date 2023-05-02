@@ -76,7 +76,7 @@ class PeminjamanController extends Controller
     }
 
     public function historyPeminjaman(){
-        $peminjaman = Peminjaman::orderBy('id','asc')->simplePaginate(5);
+        $peminjaman = Peminjaman::orderBy('tgl_peminjaman','asc')->simplePaginate(5);
         return view('admin.history.peminjaman',['peminjaman' => $peminjaman]);
     }
 

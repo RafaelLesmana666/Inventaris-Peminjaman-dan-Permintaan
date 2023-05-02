@@ -135,7 +135,7 @@
                 </tbody>
                 @endforeach
             </table>
-            {{ $peminjaman->links() }}
+            {{ $peminjaman->links('pagination::bootstrap-4') }}
         </div>
         <div class="bg-white h-72 w-80 rounded-xl"></div>
      </div>
