@@ -13,16 +13,66 @@ use App\Http\Controllers\Controller;
 class PeminjamanController extends Controller
 {
     public function index(){
+        $title = 'Hari ini';
         $total = Peminjaman::select('status_peminjaman')->count();
         $kembali = Peminjaman::where('status_peminjaman','kembali')->count();
         $dipinjam = Peminjaman::where('status_peminjaman','dipinjam')->count();
-        $peminjaman = Peminjaman::orderBy('id','asc')->simplePaginate(5);
+        $peminjaman = Peminjaman::orderBy('id','asc')->simplePaginate(4);
         return view('admin.dashboard',[
             'peminjaman' => $peminjaman,
             'total' => $total,
             'kembali' => $kembali,
-            'dipinjam' => $dipinjam
+            'dipinjam' => $dipinjam,
+            'title' => $title
         ]);
+    }
+
+    public function filterMinggu(){
+        
+            $title = "Minggu ini";
+            $total = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofWeek(), Carbon::now()->endofWeek()])->count();
+            $kembali = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofWeek(), Carbon::now()->endofWeek()])->where('status_peminjaman','kembali')->count();
+            $dipinjam = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofWeek(), Carbon::now()->endofWeek()])->where('status_peminjaman','dipinjam')->count();
+            $peminjaman = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofWeek(), Carbon::now()->endofWeek()])->simplePaginate(4);
+            return view('admin.dashboard',[
+                'peminjaman' => $peminjaman,
+                'total' => $total,
+                'kembali' => $kembali,
+                'dipinjam' => $dipinjam,
+                'title' => $title
+            ]);  
+    }
+
+    public function filterBulan(){
+    
+            $title = "Bulan ini";
+            $total = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofMonth(), Carbon::now()->endofMonth()])->count();
+            $kembali = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofMonth(), Carbon::now()->endofMonth()])->where('status_peminjaman','kembali')->count();
+            $dipinjam = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofMonth(), Carbon::now()->endofMonth()])->where('status_peminjaman','dipinjam')->count();
+            $peminjaman = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofMonth(), Carbon::now()->endofMonth()])->simplePaginate(4);
+            return view('admin.dashboard',[
+                'peminjaman' => $peminjaman,
+                'total' => $total,
+                'kembali' => $kembali,
+                'dipinjam' => $dipinjam,
+                'title' => $title
+            ]);
+    }
+    
+    public function filterTahun(){
+
+            $title = "Tahun ini";
+            $total = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofYear(), Carbon::now()->endofYear()])->count();
+            $kembali = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofYear(), Carbon::now()->endofYear()])->where('status_peminjaman','kembali')->count();
+            $dipinjam = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofYear(), Carbon::now()->endofYear()])->where('status_peminjaman','dipinjam')->count();
+            $peminjaman = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofYear(), Carbon::now()->endofYear()])->simplePaginate(4);
+            return view('admin.dashboard',[
+                'peminjaman' => $peminjaman,
+                'total' => $total,
+                'kembali' => $kembali,
+                'dipinjam' => $dipinjam,
+                'title' => $title
+            ]);
     }
 
     public function historyPeminjaman(){

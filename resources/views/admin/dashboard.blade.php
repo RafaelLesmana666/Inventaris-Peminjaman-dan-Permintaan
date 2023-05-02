@@ -7,11 +7,38 @@
         {{-- <form action="">
             <input type="text" class="border rounded-xl border-gray-300 w-80 pl-4 pt-1 pb-1 mt-1">
         </form> --}}
-        <select name="" class="border rounded-xl border-gray-300 w-34 h-8 pl-3 pr-4 mt-1.5 cursor-pointer appearance-none">
-            <option value="">Minggu</option>
-            <option value="">Bulan</option>
-            <option value="">Tahun</option>
-        </select>
+        {{-- <form action="/filterDashboard" method="post">
+            @csrf
+            <select name="filter" class="border rounded-xl border-gray-300 w-34 h-8 pl-3 pr-4 mt-1.5 cursor-pointer appearance-none">
+                <option value="minggu"><button>Minggu ini</button></option>
+                <option value="bulan"><button>Bulan ini</button></option>
+                <option value="tahun"><button>Tahun ini</button></option>
+            </select>
+            <button></button>
+        </form> --}}
+        <div class="group inline-block mt-[7px]">
+            <button class="outline-none focus:outline-none border px-3 py-1 bg-white rounded-xl flex items-center min-w-32">
+              <span class="pr-1 flex-1">Filter</span>
+              <span>
+                <svg
+                  class="fill-current h-4 w-4 transform group-hover:-rotate-180
+                  transition duration-150 ease-in-out"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                </svg>
+              </span>
+            </button>
+            <ul
+              class="bg-white border rounded-xl transform scale-0 group-hover:scale-100 absolute z-10
+            transition duration-150 ease-in-out origin-top min-w-32"
+            >
+              <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterMinggu">Minggu ini</a></li>
+              <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterBulan">Bulan ini</a></li>
+              <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterTahun">Tahun ini</a></li>
+            </ul>
+          </div>
         <div class="border border-gray-300 rounded-xl w-28 h-9 pl-4 pr-4 mt-1.5 pt-1 cursor-pointer bg-white">
             Notifikasi
         </div>
@@ -35,7 +62,7 @@
             <div class="items-center absolute left-3 top-3 flex">
                 <div class="bg-blue-300 w-10 h-10 rounded-xl"></div>
                 <div class="ml-3">
-                    <p class="w-24 text-xs text-gray-400">Hari ini</p>
+                    <p class="w-24 text-xs text-gray-400">{{ $title }}</p>
                     <p class="text-sm">Dipinjamkan</p>
                 </div>
             </div>
@@ -48,7 +75,7 @@
             <div class="items-center absolute left-3 top-3 flex">
                 <div class="bg-blue-300 w-10 h-10 rounded-xl"></div>
                 <div class="ml-3">
-                    <p class="w-24 text-xs text-gray-400">Hari ini</p>
+                    <p class="w-24 text-xs text-gray-400">{{ $title }}</p>
                     <p class="text-sm">Dalam Peminjaman</p>
                 </div>
             </div>
@@ -61,7 +88,7 @@
             <div class="items-center absolute left-3 top-3 flex">
                 <div class="bg-blue-300 w-10 h-10 rounded-xl"></div>
                 <div class="ml-3">
-                    <p class="w-24 text-xs text-gray-400">Hari ini</p>
+                    <p class="w-24 text-xs text-gray-400">{{ $title }}</p>
                     <p class="text-sm">Dikembalikan</p>
                 </div>
             </div>

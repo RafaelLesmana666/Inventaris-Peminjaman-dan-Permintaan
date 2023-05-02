@@ -64,19 +64,19 @@
             <a class="bg-white border border-gray-400 px-5 pt-3 pb-2 rounded-3xl cursor-pointer h-12" onclick="Open('pdf')">Print Report</a>
             <div id="pdf" style="display: none" class="bg-white border border-gray-400 rounded-2xl h-44 mt-2 w-60 absolute top-12 right-6 px-3 py-4">
                 <h4 class="text-left text-gray-400 mb-4">Bulan</h4>
-                <select name="" id="" class="border border-gray-300 mb-6 rounded-2xl pr-1 pl-2 py-2 w-52 cursor-pointer">
-                    <option value="">January</option>
-                    <option value="">Februari</option>
-                    <option value="">Maret</option>
-                    <option value="">April</option>
-                    <option value="">Mei</option>
-                    <option value="">Juni</option>
-                    <option value="">July</option>
-                    <option value="">Agustus</option>
-                    <option value="">September</option>
-                    <option value="">Oktober</option>
-                    <option value="">November</option>
-                    <option value="">Desember</option>
+                <select name="bulan" id="" class="border border-gray-300 mb-6 rounded-2xl pr-1 pl-2 py-2 w-52 cursor-pointer">
+                    <option value="1">January</option>
+                    <option value="2">Februari</option>
+                    <option value="3">Maret</option>
+                    <option value="4">April</option>
+                    <option value="5">Mei</option>
+                    <option value="6">Juni</option>
+                    <option value="7">July</option>
+                    <option value="8">Agustus</option>
+                    <option value="9">September</option>
+                    <option value="10">Oktober</option>
+                    <option value="11">November</option>
+                    <option value="12">Desember</option>
                 </select>
                 <button class="bg-blue-400 text-white w-24 h-7 rounded-xl absolute right-4 bottom-4">Print</button>
             </div>

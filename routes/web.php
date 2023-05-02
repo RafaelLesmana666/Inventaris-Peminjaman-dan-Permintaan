@@ -27,6 +27,9 @@ Route::post('/login',[LoginController::class, 'authanticate']);
 Route::post('logout',[LoginController::class, 'logout']);
 
 Route::get('/admin',[PeminjamanController::class, 'index']);
+Route::get('/filterMinggu',[PeminjamanController::class, 'filterMinggu']);
+Route::get('/filterBulan',[PeminjamanController::class, 'filterBulan']);
+Route::get('/filterTahun',[PeminjamanController::class, 'filterTahun']);
 Route::get('/peminjaman',[PeminjamanController::class, 'historyPeminjaman']);
 Route::get('/peminjaman/cari',[PeminjamanController::class, 'search']);
 Route::post('/print',[PeminjamanController::class, 'print']);

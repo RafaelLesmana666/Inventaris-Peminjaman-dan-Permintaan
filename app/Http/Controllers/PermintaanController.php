@@ -12,4 +12,8 @@ class PermintaanController extends Controller
         $permintaan = Permintaan::orderBy('id','asc')->simplePaginate(5);
         return view('admin.history.permintaan',['permintaan' => $permintaan]);
     }
+
+    // public function search(Request $request){
+    //     $data = $request->validate([])
+    // }
 }
