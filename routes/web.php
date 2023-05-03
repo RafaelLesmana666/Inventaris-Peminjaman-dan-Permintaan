@@ -34,7 +34,7 @@ Route::get('/peminjaman',[PeminjamanController::class, 'historyPeminjaman']);
 Route::get('/peminjaman/cari',[PeminjamanController::class, 'search']);
 Route::post('/print',[PeminjamanController::class, 'print']);
 Route::post('/peminjaman',[PeminjamanController::class, 'store']);
-Route::post('/dikembalikan/{id}',[PeminjamanController::class, 'kembali']);
+Route::post('/Dikembalikan/{id}',[PeminjamanController::class, 'kembali']);
 
 Route::get('/permintaan',[PermintaanController::class, 'index']);
 

@@ -17,7 +17,8 @@
                 <select name="role" class="border border-gray-300 w-96 h-10 rounded-lg cursor-pointer px-2 py-1">
                     <option class="hidden">Pilih Salah Satu</option>
                     <option value="admin">Admin</option>
-                    <option value="user">User</option>
+                    <option value="teknisi">Teknisi</option>
+                    <option value="guru">Guru</option>
                 </select>
             <div class="flex gap-56 mt-8">
                 <a class="text-red-500 cursor-pointer" onclick="Open('modal')">Kembali</a>
@@ -63,7 +64,7 @@
             Keluar
         </a>
       <div class="mt-14">
-            <a class="bg-blue-500 text-white border border-gray-200 px-6 py-3 rounded-3xl cursor-pointer" onclick="Open('modal')">Tambah Stok +</a>
+            <a class="bg-blue-500 text-white border border-gray-200 px-6 py-3 rounded-3xl cursor-pointer" onclick="Open('modal')">Tambah User +</a>
       </div>
     </div>
     <table class="mt-7 rounded-xl">

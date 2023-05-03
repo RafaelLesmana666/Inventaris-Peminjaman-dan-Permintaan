@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('tgl_kembali')->format('d/m/Y')->nullable();
             $table->integer('jml_barang_dipinjam');
             $table->integer('id_barang');
-            $table->enum('status_peminjaman',['kembali','dipinjam','rusak']);
+            $table->enum('status_peminjaman',['Dikembalikan','Masih Dipinjam','Barang Rusak']);
             $table->string('keterangan');
             $table->string('kategori_barang');
             $table->string('ruangan');

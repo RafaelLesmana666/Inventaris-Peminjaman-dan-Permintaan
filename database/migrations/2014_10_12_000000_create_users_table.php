@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('nip');
             $table->string('email');
             $table->string('password');
-            $table->enum('role',['admin','user']);
+            $table->enum('role',['admin','teknisi','guru']);
             $table->timestamps();
         });
     }

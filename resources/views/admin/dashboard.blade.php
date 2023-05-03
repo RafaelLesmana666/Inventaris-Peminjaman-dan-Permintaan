@@ -106,7 +106,7 @@
                 </div>
             </div>
             <div class="mt-8 flex absolute top-6 right-14">
-                <p class="text-3xl mt-3">00</p>
+                <p class="text-3xl mt-3">{{ $rusak }}</p>
                 <p class="text-base mt-5 ml-1">Barang</p>
             </div>
         </a>
@@ -125,17 +125,19 @@
                 @foreach( $peminjaman as $p)
                 <tbody>
                     <td class="px-2 py-1 text-center">{{ $p->id }}</td>
-                    <td class="px-8">{{ $p->nama_guru }}</td>
-                    <td class="px-8">{{ $p->nama_barang}}</td>
-                    @if($p->status_peminjaman == 'kembali')
-                    <td class="px-8"><div class=" text-center mb-1 py-1 px-4 bg-green-200 text-green-400 rounded-2xl">Kembali</div></td>
+                    <td class="px-8 py-1">{{ $p->nama_guru }}</td>
+                    <td class="px-8 py-1">{{ $p->nama_barang}}</td>
+                    @if ( $p->status_peminjaman == 'Dikembalikan')
+                    <td class="px-8 pt-1"><div class="text-center my-1 py-1 px-4 bg-green-200 text-green-400 rounded-2xl text-xs">Dikembalikan</div></td>
+                    @elseif ( $p->status_peminjaman == 'Masih Dipinjam')
+                    <td class="px-8 pt-1"><div class="text-center my-1 px-4 mb-1 py-1 bg-blue-200 text-blue-400 rounded-2xl text-xs">Masih Dipinjam</div></td>
                     @else
-                    <td class="px-8"><div class="px-4 mb-1 py-1 bg-blue-200 text-blue-400 rounded-2xl">Dipinjamkan</div></td>
+                    <td class="px-8 pt-1"><div class="text-center my-1 py-1 bg-red-200 text-red-400 rounded-2xl text-xs">Barang Rusak</div></td>
                     @endif
                 </tbody>
                 @endforeach
             </table>
-            {{ $peminjaman->links('pagination::bootstrap-4') }}
+            {{ $peminjaman->links() }}
         </div>
         <div class="bg-white h-72 w-80 rounded-xl"></div>
      </div>

@@ -1,7 +1,6 @@
 @extends('layout.admin.index')
 @section('content')
 
-
 <div id="modal" class="bg-black/50 z-10 w-full h-full absolute" style="display: none">
     <div class="w-1/3 h-9/12 pb-10 pt-4 bg-white absolute left-1/3 mt-8 rounded-xl">
         <form method="POST" action="/peminjaman" class="grid pl-10 gap-2" autocomplete="off">
@@ -32,13 +31,16 @@
 </div>
 
   <div class="ml-10 mt-9">
-    <span class="text-2xl font-semibold mb-7">History Pinjaman</span>
+    <span class="text-2xl font-semibold mb-7">History Peminjaman</span>
+    @if( session('error'))
+     {{ session('error') }}
+    @endif
     <div class="flex gap-6 mt-12 ">
         <form action="/peminjaman/cari" method="GET">
             <input type="text" name="search" class="border border-gray-400 rounded-3xl pl-6 pr-24 py-2" placeholder="Cari di History">
         </form>
         <div class="flex flex-col relative">
-            <a class="bg-white border border-gray-400 px-8 py-2 rounded-3xl cursor-pointer" onclick="Open('filter');">Filters</a>
+            <a class="bg-white border border-gray-400 px-8 py-2 rounded-3xl cursor-pointer" onclick="Open('filter');">Filter</a>
             <div id="filter" style="display: none;" class="bg-white border border-gray-400 rounded-xl w-60 h-80 absolute top-14 right-12">
                 <form action="" class="flex flex-col pt-4 pl-6 gap-2">
                     <label for="" class="text-gray-400">Tanggal Dipinjam</label>
@@ -111,10 +113,10 @@
             <td>{{ $p->nama_barang }}</td>
             <td>{{ $p->tgl_peminjaman->toDateString() }}</td>
             <td>{{ $p->tgl_kembali }}</td>
-            @if( $p->status_peminjaman == 'kembali' )
-            <td class="px-8 py-3 w-48"><div class="py-1 bg-green-200 text-green-400 rounded-2xl">Kembali</div></td>
+            @if( $p->status_peminjaman == 'Dikembalikan' )
+            <td class="px-8 py-3 w-48"><div class="py-1 bg-green-200 text-green-400 rounded-2xl text-sm">Dikembalikan</div></td>
             <td class="px-8">
-                <div class="group inline-block mt-[7px]">
+                <div class="group inline-block ">
                     <button class="outline-none focus:outline-none rounded-xl flex items-center min-w-32">
                       <span class="pr-1 flex-1">...</span>
                     </button>
@@ -126,8 +128,8 @@
                     </ul>
                   </div>
             </td>
-            @else
-            <td class="px-8 py-3"><div class="px-4 py-1 bg-blue-200 text-blue-400 rounded-2xl">Dipinjamkan</div></td>
+            @elseif ( $p->status_peminjaman == 'Masih Dipinjam')
+            <td class="px-8 py-3"><div class="text-xs px-4 py-1 bg-blue-200 text-blue-400 rounded-2xl">Masih Dipinjam</div></td>
             <td class="px-8 pb-3">
                 <div class="group inline-block mt-[7px]">
                     <button class="outline-none focus:outline-none rounded-xl flex items-center min-w-32">
@@ -137,12 +139,28 @@
                       class="bg-white border rounded-xl transform scale-0 group-hover:scale-100 absolute
                     transition duration-150 ease-in-out origin-top min-w-32 right-12"
                     >
-                      <div class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100 rounded-t-xl"><a href="">Detail</a></div>
-                      <form method="post" action="/dikembalikan/{{ $p->id }}">
+                      <div class="rounded-sm px-3 py-1 cursor-pointer border-b-0 hover:bg-gray-300 rounded-t-xl"><a href="">Detail</a></div>
+                      <form method="post" action="/Dikembalikan/{{ $p->id }}" class="flex flex-col">
                         @csrf
-                        <button class="text-green-300 pt-1 px-7 hover:bg-green-300 hover:text-white rounded-b-xl">Dikembalikan</button>
+                        <input type="submit" name="kondisi"  value="Dikembalikan" class="cursor-pointer border text-green-300 pt-1 px-7 hover:bg-green-300 hover:text-white">
+                        <input type="submit" name="kondisi" value="Barang Rusak" class="cursor-pointer  border-y-0 text-red-300 pt-1 px-7 hover:bg-red-300 hover:text-white rounded-b-xl">
                     </form>
                     </div>
+                  </div>
+            </td>
+            @else
+            <td class="px-8 py-3 w-48"><div class="py-1 bg-red-200 text-red-400 rounded-2xl text-xs">Barang Rusak</div></td>
+            <td class="px-8">
+                <div class="group inline-block ">
+                    <button class="outline-none focus:outline-none rounded-xl flex items-center min-w-32">
+                      <span class="pr-1 flex-1">...</span>
+                    </button>
+                    <ul
+                      class="bg-white border rounded-xl transform scale-0 group-hover:scale-100 absolute
+                    transition duration-150 ease-in-out origin-top min-w-32 right-10"
+                    >
+                      <div class="rounded-xl px-12 py-1 cursor-pointer hover:bg-gray-300 rounded-xl"><a href="">Detail</a></div>
+                    </ul>
                   </div>
             </td>
             @endif 

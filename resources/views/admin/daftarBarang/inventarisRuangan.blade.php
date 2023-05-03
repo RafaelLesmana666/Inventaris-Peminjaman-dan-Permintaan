@@ -13,7 +13,7 @@
                 <input type="number" name="jml_barang" class="border border-gray-300 w-96 h-7 rounded-lg p-2">
             <label for="kategori_barang" class="text-gray-400">Kategori Barang</label>
                 <select name="kategori_barang" class="border border-gray-300 w-96 h-10 cursor-pointer rounded-lg p-2">
-                    <option value="alat_tulis">Alat Tulis</option>
+                    <option value="Alat Tulis">Alat Tulis</option>
                 </select>
             <label for="kondisi_barang" class="text-gray-400">Spesifikasi Barang</label>
                 <textarea name="kondisi_barang" class="border border-gray-300 w-96 h-24 rounded-lg mb-4 resize-none p-2"></textarea>

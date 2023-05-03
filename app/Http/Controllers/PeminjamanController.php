@@ -14,65 +14,48 @@ class PeminjamanController extends Controller
 {
     public function index(){
         $title = 'Hari ini';
-        $total = Peminjaman::select('status_peminjaman')->count();
-        $kembali = Peminjaman::where('status_peminjaman','kembali')->count();
-        $dipinjam = Peminjaman::where('status_peminjaman','dipinjam')->count();
-        $peminjaman = Peminjaman::orderBy('id','asc')->simplePaginate(4);
-        return view('admin.dashboard',[
-            'peminjaman' => $peminjaman,
-            'total' => $total,
-            'kembali' => $kembali,
-            'dipinjam' => $dipinjam,
-            'title' => $title
-        ]);
-    }
+        $total = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofDay(), Carbon::now()->endofDay()])->count();
+        $dipinjam = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofDay(), Carbon::now()->endofDay()])->where('status_peminjaman','Masih Dipinjam')->count();
+        $kembali = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofDay(), Carbon::now()->endofDay()])->where('status_peminjaman','Dikembalikan')->count();
+        $rusak = Peminjaman::where('status_peminjaman','Barang Rusak')->count();
 
+        $peminjaman = Peminjaman::orderBy('id','asc')->simplePaginate(4);
+        return view('admin.dashboard',compact('total','dipinjam','kembali','peminjaman','title','rusak'));
+    }
     public function filterMinggu(){
         
             $title = "Minggu ini";
             $total = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofWeek(), Carbon::now()->endofWeek()])->count();
-            $kembali = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofWeek(), Carbon::now()->endofWeek()])->where('status_peminjaman','kembali')->count();
-            $dipinjam = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofWeek(), Carbon::now()->endofWeek()])->where('status_peminjaman','dipinjam')->count();
+            $dipinjam = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofWeek(), Carbon::now()->endofWeek()])->where('status_peminjaman','Masih Dipinjam')->count();
+            $kembali = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofWeek(), Carbon::now()->endofWeek()])->where('status_peminjaman','Dikembalikan')->count();
+            $rusak = Peminjaman::where('status_peminjaman','Barang Rusak')->count();
+
             $peminjaman = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofWeek(), Carbon::now()->endofWeek()])->simplePaginate(4);
-            return view('admin.dashboard',[
-                'peminjaman' => $peminjaman,
-                'total' => $total,
-                'kembali' => $kembali,
-                'dipinjam' => $dipinjam,
-                'title' => $title
-            ]);  
+            return view('admin.dashboard',compact('total','dipinjam','kembali','peminjaman','title','rusak'));
     }
 
     public function filterBulan(){
     
             $title = "Bulan ini";
             $total = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofMonth(), Carbon::now()->endofMonth()])->count();
-            $kembali = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofMonth(), Carbon::now()->endofMonth()])->where('status_peminjaman','kembali')->count();
-            $dipinjam = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofMonth(), Carbon::now()->endofMonth()])->where('status_peminjaman','dipinjam')->count();
+            $dipinjam = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofMonth(), Carbon::now()->endofMonth()])->where('status_peminjaman','Masih Dipinjam')->count();
+            $kembali = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofMonth(), Carbon::now()->endofMonth()])->where('status_peminjaman','Dikembalikan')->count();
+            $rusak = Peminjaman::where('status_peminjaman','Barang Rusak')->count();
+
             $peminjaman = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofMonth(), Carbon::now()->endofMonth()])->simplePaginate(4);
-            return view('admin.dashboard',[
-                'peminjaman' => $peminjaman,
-                'total' => $total,
-                'kembali' => $kembali,
-                'dipinjam' => $dipinjam,
-                'title' => $title
-            ]);
+            return view('admin.dashboard',compact('total','dipinjam','kembali','peminjaman','title','rusak'));
     }
     
     public function filterTahun(){
 
             $title = "Tahun ini";
             $total = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofYear(), Carbon::now()->endofYear()])->count();
-            $kembali = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofYear(), Carbon::now()->endofYear()])->where('status_peminjaman','kembali')->count();
-            $dipinjam = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofYear(), Carbon::now()->endofYear()])->where('status_peminjaman','dipinjam')->count();
+            $dipinjam = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofYear(), Carbon::now()->endofYear()])->where('status_peminjaman','Masih Dipinjam')->count();
+            $kembali = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofYear(), Carbon::now()->endofYear()])->where('status_peminjaman','Dikembalikan')->count();
+            $rusak = Peminjaman::where('status_peminjaman','Barang Rusak')->count();
+
             $peminjaman = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofYear(), Carbon::now()->endofYear()])->simplePaginate(4);
-            return view('admin.dashboard',[
-                'peminjaman' => $peminjaman,
-                'total' => $total,
-                'kembali' => $kembali,
-                'dipinjam' => $dipinjam,
-                'title' => $title
-            ]);
+            return view('admin.dashboard',compact('total','dipinjam','kembali','peminjaman','title','rusak'));
     }
 
     public function historyPeminjaman(){
@@ -114,40 +97,74 @@ class PeminjamanController extends Controller
             'kategori_barang',
             'ruangan' => 'required' 
         ]);
-             $barang = Barang::all();
-             $cekbarang = $data['nama_barang'];
-           
+
              $guru = $data['nama_guru'];
              $ambilnip = User::where('username',$guru)->first();
-             $data['nip'] = $ambilnip->id;
 
-             $data['tgl_peminjaman'] = Carbon::now()->toDateString();
-
-             $stok = Barang::where('nama_barang',$cekbarang)->first();
-             $data['id_barang'] = $stok->id;
-             $data['status_peminjaman'] = 'dipinjam';
-             $data['kategori_barang'] = $stok->kategori_barang;
-
-             $jml = $data['jml_barang_dipinjam'];
-             $kurang = $stok->jml_barang;
-             $selisih = $kurang - $jml;
-             $update = [ 'jml_barang' => $selisih]; 
-
-             $stok->update($update);
-
-             Peminjaman::create($data);
-
-             return back();
+             if ($ambilnip == null){
+                return back()->with('error','nama guru belum terdaftar!');
+             }else{
+                $data['nip'] = $ambilnip->id;
+                $cekbarang = $data['nama_barang'];
+                $stok = Barang::where('nama_barang',$cekbarang)->first();
+                if($stok == null){
+                    return back()->with('error','barang tidak tersedia');
+                }else{
+                    $data['tgl_peminjaman'] = Carbon::now()->toDateString();
+                    $data['id_barang'] = $stok->id;
+                    $data['status_peminjaman'] = 'Masih Dipinjam';
+                    $data['kategori_barang'] = $stok->kategori_barang;
+                    $jml = $data['jml_barang_dipinjam'];
+                    $kurang = $stok->jml_barang;
+                    $selisih = $kurang - $jml;
+                    if($selisih <= 0){
+                        return back()->with('error','stock tersisa ' . $kurang);
+                    }else{
+                      $update = [ 'jml_barang' => $selisih]; 
+                      $stok->update($update);
+                      Peminjaman::create($data);
+                      return back();
+                    }
+                }
+            }
     }
 
-    public function kembali($id){
-        $now = Carbon::now();
-        $update = [
-            'status_peminjaman' => 'kembali',
-            'tgl_kembali' => $now
-        ];
-        $peminjaman = Peminjaman::where('id',$id)->first();
-        $peminjaman->update($update);
-        return back();
+    public function kembali($id, Request $request){
+        $data = $request->validate([
+            'kondisi' => 'required'
+        ]);
+
+        $kondisi = $data['kondisi'];
+
+        if($kondisi == 'Dikembalikan'){
+            $now = Carbon::now();
+            $update = [
+                'status_peminjaman' => 'Dikembalikan',
+                'tgl_kembali' => $now
+            ];
+            $peminjaman = Peminjaman::where('id',$id)->first();
+
+            $barangDipinjam = $peminjaman->nama_barang;
+            $jumlah = $peminjaman->jml_barang_dipinjam;
+
+            $barang = Barang::where('nama_barang',$barangDipinjam)->first();
+            $stok = $barang->jml_barang;
+            $stokKembali = $stok + $jumlah;
+            $updateBarang = ['jml_barang' => $stokKembali];
+            $peminjaman->update($update);
+            $barang->update($updateBarang);
+
+            return back();
+
+           }else{
+            $now = Carbon::now();
+            $update = [
+                'status_peminjaman' => 'Barang Rusak',
+                'tgl_kembali' => $now
+            ];
+            $peminjaman = Peminjaman::where('id',$id)->first();
+            $peminjaman->update($update);
+            return back();
+           }
     }
 }
