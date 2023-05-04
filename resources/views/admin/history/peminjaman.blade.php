@@ -33,6 +33,7 @@
   <div class="ml-10 mt-9">
     <span class="text-2xl font-semibold mb-7">History Peminjaman</span>
     @if( session('error'))
+      Alert()
      {{ session('error') }}
     @endif
     <div class="flex gap-6 mt-12 ">

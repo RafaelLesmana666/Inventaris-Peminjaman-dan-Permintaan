@@ -11,7 +11,7 @@
             <img src="/assets/people.svg" class="z-index-0 relative left-56 h-96 top-32">  
             <img src="/assets/gradasi.svg" class="absolute bottom-0 h-72">
         <div class="right-52 absolute top-44">
-            <form action="/login" method="POST">
+            <form action="/login" method="POST" autocomplete="off">
                 @csrf
                 <div class="w-96 flex flex-col">
                   <h3 class="text-left text-blue-600 font-semibold text-3xl">Selamat Datang !</h3>

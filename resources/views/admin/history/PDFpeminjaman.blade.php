@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Laporan Pengaduan Masyarakat Desa Cigombong</title>
+	<title>Laporan Peminjaman Inventaris SMK Wikrama Bogor</title>
     <style>
         table {
             text-align: center;
@@ -18,10 +18,10 @@
 </head>
 <body>
 	<div style="display:flex;flex-direction: row;">
-		<img src="kab.png" style="width:4rem;height:4rem;position: absolute;top: 1rem;">
+		<img src="logo.png" style="width:8rem;height:8rem;position: absolute;">
 		<div style="text-align: center;">
-			<h2>Laporan Pengaduan Masyarakat Desa Cigombong</h2>
-			<p>Jl. Raya H.R. Edi Sukma km. 22 No. 12 Cigombong Bogor 16110</p>
+			<h2>Laporan Peminjaman Inventaris SMK Wikrama Bogor</h2>
+			<h5>Jl. Raya Wangun, RT.01/RW.06, Sindangsari, Kec. Bogor Tim., Kota Bogor, Jawa Barat 16146</h5>
 		</div>
 	</div>
 	<hr style="margin-bottom: 2.5rem;">

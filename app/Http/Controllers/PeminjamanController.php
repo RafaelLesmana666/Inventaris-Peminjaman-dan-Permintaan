@@ -19,7 +19,7 @@ class PeminjamanController extends Controller
         $kembali = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofDay(), Carbon::now()->endofDay()])->where('status_peminjaman','Dikembalikan')->count();
         $rusak = Peminjaman::where('status_peminjaman','Barang Rusak')->count();
 
-        $peminjaman = Peminjaman::orderBy('id','asc')->simplePaginate(4);
+        $peminjaman = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofDay(), Carbon::now()->endofDay()])->simplePaginate(4);
         return view('admin.dashboard',compact('total','dipinjam','kembali','peminjaman','title','rusak'));
     }
     public function filterMinggu(){

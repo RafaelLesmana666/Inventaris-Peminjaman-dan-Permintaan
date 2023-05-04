@@ -4,21 +4,9 @@
 <div class="ml-10 mt-12 ">
     <div class="flex gap-10">
         <h3 class="text-3xl mr-96">Dashboard</h3>
-        {{-- <form action="">
-            <input type="text" class="border rounded-xl border-gray-300 w-80 pl-4 pt-1 pb-1 mt-1">
-        </form> --}}
-        {{-- <form action="/filterDashboard" method="post">
-            @csrf
-            <select name="filter" class="border rounded-xl border-gray-300 w-34 h-8 pl-3 pr-4 mt-1.5 cursor-pointer appearance-none">
-                <option value="minggu"><button>Minggu ini</button></option>
-                <option value="bulan"><button>Bulan ini</button></option>
-                <option value="tahun"><button>Tahun ini</button></option>
-            </select>
-            <button></button>
-        </form> --}}
         <div class="group inline-block mt-[7px]">
             <button class="outline-none focus:outline-none border px-3 py-1 bg-white rounded-xl flex items-center min-w-32">
-              <span class="pr-1 flex-1">Filter</span>
+              <span class="pr-1 flex-1">{{ $title }}</span>
               <span>
                 <svg
                   class="fill-current h-4 w-4 transform group-hover:-rotate-180
@@ -34,9 +22,27 @@
               class="bg-white border rounded-xl transform scale-0 group-hover:scale-100 absolute z-10
             transition duration-150 ease-in-out origin-top min-w-32"
             >
-              <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterMinggu">Minggu ini</a></li>
-              <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterBulan">Bulan ini</a></li>
-              <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterTahun">Tahun ini</a></li>
+              @if ( $title == 'Hari ini')
+                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100 hidden"><a href="/admin">Hari ini</a></li>
+                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterMinggu">Minggu ini</a></li>
+                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterBulan">Bulan ini</a></li>
+                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterTahun">Tahun ini</a></li>
+              @elseif ( $title == 'Minggu ini')
+                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/admin">Hari ini</a></li>
+                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100 hidden"><a href="/filterMinggu">Minggu ini</a></li>
+                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterBulan">Bulan ini</a></li>
+                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterTahun">Tahun ini</a></li>
+               @elseif ( $title == 'Bulan ini')
+               <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/admin">Hari ini</a></li>
+               <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterMinggu">Minggu ini</a></li>
+               <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100 hidden"><a href="/filterBulan">Bulan ini</a></li>
+               <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterTahun">Tahun ini</a></li>
+               @else
+               <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/admin">Hari ini</a></li>
+               <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterMinggu">Minggu ini</a></li>
+               <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterBulan">Bulan ini</a></li>
+               <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100 hidden"><a href="/filterTahun">Tahun ini</a></li>
+               @endif
             </ul>
           </div>
         <div class="border border-gray-300 rounded-xl w-28 h-9 pl-4 pr-4 mt-1.5 pt-1 cursor-pointer bg-white">
@@ -113,7 +119,7 @@
     </div>
      <div class="flex gap-9 mt-8">
         <div class="h-72 w-9/12 rounded-xl pr-4 bg-white">
-            <h3 class="ml-8 mt-4 text-sm text-gray-500">Saat Ini</h3>
+            <h3 class="ml-8 mt-4 text-sm text-gray-500">{{ $title }}</h3>
             <h4 class="ml-8 ">Status Terbaru</h4>
             <table class="ml-6 mt-2">
                 <thead class="text-left">
