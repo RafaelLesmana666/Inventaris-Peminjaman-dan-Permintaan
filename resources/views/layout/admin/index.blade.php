@@ -8,7 +8,7 @@
     <link href="/css/config.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-100 select-none">
     <div class="bg-cyan-500 h-screen w-64">
       <div class="flex flex-row items-center top-11 absolute left-6">
          <img src="/assets/logo.png" alt="logo" class="w-[68px] h-[50px] pr-3">

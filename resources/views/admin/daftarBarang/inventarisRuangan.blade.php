@@ -61,7 +61,7 @@
             Keluar
         </a>
       <div class="mt-14">
-            <a class="bg-blue-500 text-white border border-gray-200 px-6 py-3 rounded-3xl cursor-pointer" onclick="Open('modal')">Tambah Stok +</a>
+            <a class="bg-blue-500 text-white border border-gray-200 px-6 py-3 rounded-3xl cursor-pointer" onclick="Open('modal')">Tambah Barang +</a>
       </div>
     </div>
     <table class="mt-7 text-center rounded-xl">

@@ -18,9 +18,9 @@ return new class extends Migration
             $table->integer('nip');
             $table->string('nama_guru');
             $table->string('nama_barang');
-            $table->date('tgl_permintaan');
+            $table->date('tgl_permintaan')->format('j-F-Y');
             $table->string('jml_barang_diminta');
-            $table->text('alasan');
+            $table->text('alasan')->nullable();
             $table->integer('id_barang');
             $table->timestamps();
         });

@@ -28,23 +28,21 @@
 	<table>
 		<thead>
 			<tr>
-				<th>Ruangan</th>
-				<th>Nama Peminjam</th>
+				<th>Nama Guru</th>
 				<th>Nama Barang</th>
-				<th>Tanggal Peminjaman</th>
-				<th>Tanggal Kembali</th>
-				<th>Status</th>
+				<th>Jumlah Barang</th>
+				<th>Tanggal Diminta</th>
+				<th>Alasan</th>
 			</tr>
 		</thead>
 		<tbody>
 			@foreach($filter as $p)
 			<tr>
-				<td>{{ $p->ruangan }}</td>
 				<td>{{ $p->nama_guru }}</td>
 				<td>{{ $p->nama_barang }}</td>
-				<td>{{ $p->tgl_peminjaman->toDateString() }}</td>
-				<td>{{ $p->tgl_kembali }}</td>
-				<td>{{ $p->status_peminjaman }}</td>
+                <td>{{ $p->jml_barang_diminta }}</td>
+				<td>{{ $p->tgl_permintaan->format('j-F-Y')}}</td>
+				<td>{{ $p->alasan}}</td>
 			</tr>
 			@endforeach
 		</tbody>

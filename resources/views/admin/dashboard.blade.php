@@ -59,9 +59,9 @@
                         </div>
                     </div>
             </div>
-            <a onclick="Alert()" id="logoutButton" style="display: none;" class="bg-white text-red-400 text-left rounded-lg w-32 h-8 pl-4 pt-1 absolute right-20 top-24 cursor-pointer hover:bg-red-500 hover:text-white">
-                Keluar
-            </a>
+            <div id="logoutButton" style="display: none;" class="bg-white text-red-400 text-left rounded-lg w-32 h-8 pl-4 pt-1 absolute right-20 top-24 cursor-pointer hover:bg-red-500 hover:text-white">
+                
+        </div>
     </div>
     <div class="mt-12 flex gap-10">
         <a href="" class="bg-white w-24 pt-8 pb-24 px-28 relative rounded-xl">

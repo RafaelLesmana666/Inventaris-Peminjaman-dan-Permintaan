@@ -100,8 +100,8 @@
     <table class="mt-7 text-center">
          <thead class="bg-blue-300">
             <th class="px-3 py-2 rounded-tl-lg">Ruang</th>
-            <th class="px-5">Nama Peminjam</th>
-            <th class="px-8">Barang Dipinjam</th>
+            <th class="pl-4">Nama Peminjam</th>
+            <th class="px-8 text-sm">Barang Dipinjam</th>
             <th class="px-6">Tanggal Pinjam</th>
             <th class="px-6">Tanggal Kembali</th>
             <th class="px-14">Status</th>
@@ -110,10 +110,14 @@
          @foreach( $peminjaman as $p)
          <tbody class="bg-gray-200">
             <td class="py-3 rounded-bl-lg">{{ $p->ruangan }}</td>
-            <td>{{ $p->nama_guru }}</td>
+            <td class="pt-4 w-48 overflow-hidden whitespace-nowrap text-ellipsis inline-block">{{ $p->nama_guru }}</td>
             <td>{{ $p->nama_barang }}</td>
-            <td>{{ $p->tgl_peminjaman->toDateString() }}</td>
-            <td>{{ $p->tgl_kembali }}</td>
+            <td>{{ $p->tgl_peminjaman->format('j-F-Y') }}</td>
+            @if($p->tgl_kembali == "")
+              <td>{{ $p->tgl_kembali }}</td> 
+            @else
+               <td>{{ $p->tgl_kembali->format('j-F-Y') }}</td>
+            @endif
             @if( $p->status_peminjaman == 'Dikembalikan' )
             <td class="px-8 py-3 w-48"><div class="py-1 bg-green-200 text-green-400 rounded-2xl text-sm">Dikembalikan</div></td>
             <td class="px-8">
@@ -125,7 +129,7 @@
                       class="bg-white border rounded-xl transform scale-0 group-hover:scale-100 absolute
                     transition duration-150 ease-in-out origin-top min-w-32 right-10"
                     >
-                      <div class="rounded-xl px-12 py-1 cursor-pointer hover:bg-gray-300 rounded-xl"><a href="">Detail</a></div>
+                      <div class="rounded-xl px-12 py-1 cursor-pointer hover:bg-gray-300 rounded-xl"><button onclick="Open('modalDetail')">Detail</button></div>
                     </ul>
                   </div>
             </td>
@@ -140,7 +144,7 @@
                       class="bg-white border rounded-xl transform scale-0 group-hover:scale-100 absolute
                     transition duration-150 ease-in-out origin-top min-w-32 right-12"
                     >
-                      <div class="rounded-sm px-3 py-1 cursor-pointer border-b-0 hover:bg-gray-300 rounded-t-xl"><a href="">Detail</a></div>
+                      <div class="rounded-sm px-3 py-1 cursor-pointer border-b-0 hover:bg-gray-300 rounded-t-xl"><button onclick="Open('modalDetail')">Detail</button></div>
                       <form method="post" action="/Dikembalikan/{{ $p->id }}" class="flex flex-col">
                         @csrf
                         <input type="submit" name="kondisi"  value="Dikembalikan" class="cursor-pointer border text-green-300 pt-1 px-7 hover:bg-green-300 hover:text-white">
@@ -160,7 +164,7 @@
                       class="bg-white border rounded-xl transform scale-0 group-hover:scale-100 absolute
                     transition duration-150 ease-in-out origin-top min-w-32 right-10"
                     >
-                      <div class="rounded-xl px-12 py-1 cursor-pointer hover:bg-gray-300 rounded-xl"><a href="">Detail</a></div>
+                      <div class="rounded-xl px-12 py-1 cursor-pointer hover:bg-gray-300 rounded-xl"><button onclick="Open('modalDetail')">Detail</button></div>
                     </ul>
                   </div>
             </td>

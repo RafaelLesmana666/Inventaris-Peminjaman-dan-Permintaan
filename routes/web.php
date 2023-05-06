@@ -37,13 +37,15 @@ Route::post('/peminjaman',[PeminjamanController::class, 'store']);
 Route::post('/Dikembalikan/{id}',[PeminjamanController::class, 'kembali']);
 
 Route::get('/permintaan',[PermintaanController::class, 'index']);
+Route::post('/permintaan',[PermintaanController::class, 'store']);
+Route::post('/printPDF',[PermintaanController::class, 'print']);
 
 Route::get('/inventaris',[BarangController::class, 'inventaris']);
 Route::post('/inventaris',[BarangController::class, 'tambahInventaris']);
 Route::get('/inventaris/cari',[BarangController::class, 'cariInventaris']);
 
 Route::get('/nonInventaris',[BarangController::class, 'noninventaris']);
-Route::post('/nonInventaris',[BarangController::class,'tambahNonInventaris']);
+Route::post('/nonInventaris',[BarangController::class, 'tambahNonInventaris']);
 Route::get('/nonInventaris/cari',[BarangController::class, 'cariNonInventaris']);
 
 Route::get('/inventarisRuangan',[BarangController::class, 'inventarisRuangan']);

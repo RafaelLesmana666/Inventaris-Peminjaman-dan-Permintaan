@@ -24,5 +24,5 @@ class Peminjaman extends Model
         'ruangan'
     ];
 
-    protected $dates = ['tgl_peminjaman'];
+    protected $dates = ['tgl_peminjaman','tgl_kembali'];
 }

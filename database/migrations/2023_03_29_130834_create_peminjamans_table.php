@@ -18,8 +18,8 @@ return new class extends Migration
             $table->integer('nip');
             $table->string('nama_guru');
             $table->string('nama_barang');
-            $table->date('tgl_peminjaman')->format('d/m/Y');
-            $table->date('tgl_kembali')->format('d/m/Y')->nullable();
+            $table->date('tgl_peminjaman')->format('j-F-Y');
+            $table->date('tgl_kembali')->format('j-F-Y')->nullable();
             $table->integer('jml_barang_dipinjam');
             $table->integer('id_barang');
             $table->enum('status_peminjaman',['Dikembalikan','Masih Dipinjam','Barang Rusak']);

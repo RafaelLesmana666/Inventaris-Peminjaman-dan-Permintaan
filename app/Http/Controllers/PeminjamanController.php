@@ -20,7 +20,7 @@ class PeminjamanController extends Controller
         $rusak = Peminjaman::where('status_peminjaman','Barang Rusak')->count();
 
         $peminjaman = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofDay(), Carbon::now()->endofDay()])->simplePaginate(4);
-        return view('admin.dashboard',compact('total','dipinjam','kembali','peminjaman','title','rusak'));
+        return view('admin.dashboard', compact('total','dipinjam','kembali','peminjaman','title','rusak'));
     }
     public function filterMinggu(){
         
@@ -31,7 +31,7 @@ class PeminjamanController extends Controller
             $rusak = Peminjaman::where('status_peminjaman','Barang Rusak')->count();
 
             $peminjaman = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofWeek(), Carbon::now()->endofWeek()])->simplePaginate(4);
-            return view('admin.dashboard',compact('total','dipinjam','kembali','peminjaman','title','rusak'));
+            return view('admin.dashboard', compact('total','dipinjam','kembali','peminjaman','title','rusak'));
     }
 
     public function filterBulan(){
@@ -43,7 +43,7 @@ class PeminjamanController extends Controller
             $rusak = Peminjaman::where('status_peminjaman','Barang Rusak')->count();
 
             $peminjaman = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofMonth(), Carbon::now()->endofMonth()])->simplePaginate(4);
-            return view('admin.dashboard',compact('total','dipinjam','kembali','peminjaman','title','rusak'));
+            return view('admin.dashboard', compact('total','dipinjam','kembali','peminjaman','title','rusak'));
     }
     
     public function filterTahun(){
@@ -55,12 +55,12 @@ class PeminjamanController extends Controller
             $rusak = Peminjaman::where('status_peminjaman','Barang Rusak')->count();
 
             $peminjaman = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofYear(), Carbon::now()->endofYear()])->simplePaginate(4);
-            return view('admin.dashboard',compact('total','dipinjam','kembali','peminjaman','title','rusak'));
+            return view('admin.dashboard', compact('total','dipinjam','kembali','peminjaman','title','rusak'));
     }
 
     public function historyPeminjaman(){
         $peminjaman = Peminjaman::orderBy('tgl_peminjaman','asc')->simplePaginate(5);
-        return view('admin.history.peminjaman',['peminjaman' => $peminjaman]);
+        return view('admin.history.peminjaman',compact('peminjaman'));
     }
 
     public function search(Request $request){
@@ -79,7 +79,7 @@ class PeminjamanController extends Controller
         
         $bulan = $data['bulan'];
         $filter = Peminjaman::whereMonth('tgl_peminjaman',$bulan)->get();
-        $cetak = PDF::loadview('admin.history.PDFpeminjaman',['bulan' => $filter]);
+        $cetak = PDF::loadview('admin.history.PDFpeminjaman', compact('filter'));
         return $cetak->stream();
     }
 
@@ -102,13 +102,13 @@ class PeminjamanController extends Controller
              $ambilnip = User::where('username',$guru)->first();
 
              if ($ambilnip == null){
-                return back()->with('error','nama guru belum terdaftar!');
+                return with('error','nama guru belum terdaftar!');
              }else{
                 $data['nip'] = $ambilnip->id;
                 $cekbarang = $data['nama_barang'];
                 $stok = Barang::where('nama_barang',$cekbarang)->first();
                 if($stok == null){
-                    return back()->with('error','barang tidak tersedia');
+                    return with('error','barang tidak tersedia');
                 }else{
                     $data['tgl_peminjaman'] = Carbon::now()->toDateString();
                     $data['id_barang'] = $stok->id;
@@ -118,7 +118,7 @@ class PeminjamanController extends Controller
                     $kurang = $stok->jml_barang;
                     $selisih = $kurang - $jml;
                     if($selisih <= 0){
-                        return back()->with('error','stock tersisa ' . $kurang);
+                        return with('error','stock tersisa ' . $kurang);
                     }else{
                       $update = [ 'jml_barang' => $selisih]; 
                       $stok->update($update);

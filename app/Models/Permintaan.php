@@ -14,8 +14,10 @@ class Permintaan extends Model
         'nip',
         'nama_guru',
         'nama_barang',
-        'tgl_pengadaan',
+        'tgl_permintaan',
         'jml_barang_diminta',
+        'alasan',
         'id_barang'
     ];
+    protected $dates = ['tgl_permintaan'];
 }
