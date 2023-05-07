@@ -1,6 +1,7 @@
 @extends('layout.admin.index')
 @section('content')
 
+{{-- modal permintaan  --}}
 <div id="modal" class="bg-black/50 z-10 w-full h-full absolute" style="display: none">
     <div class="w-1/3 h-9/12 pb-10 pt-4 bg-white absolute left-1/3 mt-8 rounded-xl">
         <form method="POST" action="/peminjaman" class="grid pl-10 gap-2" autocomplete="off">
@@ -13,7 +14,7 @@
                 {{-- <input type="date" name="tgl_peminjaman"> --}}
             <label for="nama_barang" class="text-gray-400">Barang apa yang dipinjam? (Jumlah - Barang)</label>
                 <div class="flex">
-                    <input type="text" name="nama_barang" class="border border-gray-300 w-72 h-7 rounded-lg p-2">
+                    <input type="text" name="nama_barang" class="border border-gray-300 w-72 h-7 rounded-lg px-2 py-3">
                     <div class="flex justify-center ml-3">
                         <span class="w-4 rounded-3xl border border-gray-400 text-center cursor-pointer" onClick='decreaseCount(event, this)'>-</span>
                         <input type="number" name="jml_barang_dipinjam" placeholder="0" class="w-12 text-center ml-4">
@@ -21,19 +22,52 @@
                       </div>
                 </div>
             <label for="keterangan" class="text-gray-400">Alasan Meminjam</label>
-                <textarea name="keterangan" class="border border-gray-300 w-96 h-12 rounded-lg mb-10 resize-none px-2 py-1"></textarea>
+                <textarea name="keterangan" class="border border-gray-300 w-96 h-36 rounded-lg mb-6 resize-none px-2 py-1"></textarea>
             <div class="flex gap-56">
-                <a class="text-red-500 cursor-pointer items-center" onclick="Open('modal')">&larr;Kembali</a>
+                <a class="text-red-500 cursor-pointer items-center" onclick="Open('modal')">Kembali</a>
                 <button type="submit" class="w-24 h-8 p-1 text-center bg-blue-500 text-white rounded-2xl">Tambah</button>
             </div>
         </form>
     </div>
 </div>
+{{-- modal detail  --}}
+@if ( $detail == null)
+@else
+<div id="detail" class="bg-black/50 z-10 w-full h-full absolute">
+  <div class="w-1/3 h-9/12 pb-4 pt-4 bg-white absolute top-1/4 left-1/3 rounded-xl">
+    <table class="ml-5">
+      <h3 class="font-semibold ml-5 my-3 text-xl">Detail Peminjaman</h3>
+        <tr>
+          <td class="pr-7 y-2 text-gray-400">Ruang Peminjaman</td>
+          <td class="pr-4">:</td>
+          <td>{{ $detail->ruangan }}</td>
+        </tr>
+        <tr>
+          <td class="text-gray-400">Durasi Peminjaman</td>
+          <td>:</td>
+          @if ( $detail->tgl_kembali != null)
+           <td>{{ $detail->tgl_peminjaman->format('j-F-Y') }} - {{ $detail->tgl_kembali->format('j-F-Y')}}</td>
+          @else
+           <td>{{ $detail->tgl_peminjaman->format('j-F-Y') }} - </td>
+          @endif
+        </tr>
+        <tr>
+          <td class="text-gray-400">Barang dipinjam</td>
+          <td>:</td>
+          <td>{{ $detail->nama_barang }}</td>
+        </tr>
+    </table>
+    <div class="relative w-full h-12"> <a class="text-red-500 cursor-pointer absolute right-6 bottom-0" href="/peminjaman">Kembali</a></div>
+  </div>
+  </div>
+</div>
+@endif 
 
+{{-- main kontent --}}
   <div class="ml-10 mt-9">
     <span class="text-2xl font-semibold mb-7">History Peminjaman</span>
     @if( session('error'))
-      Alert()
+      
      {{ session('error') }}
     @endif
     <div class="flex gap-6 mt-12 ">
@@ -97,7 +131,7 @@
             <a class="bg-blue-500 text-white border border-gray-200 px-6 pt-3 pb-2 rounded-3xl cursor-pointer h-12" onclick="Open('modal')">Peminjaman +</a>
       </div>
     </div>
-    <table class="mt-7 text-center">
+    <table class="mt-7 mb-3 text-center">
          <thead class="bg-blue-300">
             <th class="px-3 py-2 rounded-tl-lg">Ruang</th>
             <th class="pl-4">Nama Peminjam</th>
@@ -109,7 +143,7 @@
          </thead>
          @foreach( $peminjaman as $p)
          <tbody class="bg-gray-200">
-            <td class="py-3 rounded-bl-lg">{{ $p->ruangan }}</td>
+            <td class="py-3">{{ $p->ruangan }}</td>
             <td class="pt-4 w-48 overflow-hidden whitespace-nowrap text-ellipsis inline-block">{{ $p->nama_guru }}</td>
             <td>{{ $p->nama_barang }}</td>
             <td>{{ $p->tgl_peminjaman->format('j-F-Y') }}</td>
@@ -127,9 +161,9 @@
                     </button>
                     <ul
                       class="bg-white border rounded-xl transform scale-0 group-hover:scale-100 absolute
-                    transition duration-150 ease-in-out origin-top min-w-32 right-10"
+                    transition duration-150 ease-in-out origin-top min-w-32 right-10 z-10"
                     >
-                      <div class="rounded-xl px-12 py-1 cursor-pointer hover:bg-gray-300 rounded-xl"><button onclick="Open('modalDetail')">Detail</button></div>
+                      <div class="rounded-xl px-12 py-1 cursor-pointer hover:bg-gray-300"><a href="/detail/{{ $p->id }}">Detail</a></div>
                     </ul>
                   </div>
             </td>
@@ -142,14 +176,14 @@
                     </button>
                     <div
                       class="bg-white border rounded-xl transform scale-0 group-hover:scale-100 absolute
-                    transition duration-150 ease-in-out origin-top min-w-32 right-12"
+                    transition duration-150 ease-in-out origin-top min-w-32 right-12 z-10"
                     >
-                      <div class="rounded-sm px-3 py-1 cursor-pointer border-b-0 hover:bg-gray-300 rounded-t-xl"><button onclick="Open('modalDetail')">Detail</button></div>
+                      <div class="rounded-sm px-3 py-1 cursor-pointer border-b-0 hover:bg-gray-300 rounded-t-xl"><a href="/detail/{{ $p->id }}">Detail</a></div>
                       <form method="post" action="/Dikembalikan/{{ $p->id }}" class="flex flex-col">
                         @csrf
                         <input type="submit" name="kondisi"  value="Dikembalikan" class="cursor-pointer border text-green-300 pt-1 px-7 hover:bg-green-300 hover:text-white">
                         <input type="submit" name="kondisi" value="Barang Rusak" class="cursor-pointer  border-y-0 text-red-300 pt-1 px-7 hover:bg-red-300 hover:text-white rounded-b-xl">
-                    </form>
+                      </form>
                     </div>
                   </div>
             </td>
@@ -162,9 +196,9 @@
                     </button>
                     <ul
                       class="bg-white border rounded-xl transform scale-0 group-hover:scale-100 absolute
-                    transition duration-150 ease-in-out origin-top min-w-32 right-10"
+                    transition duration-150 ease-in-out origin-top min-w-32 right-10 z-10"
                     >
-                      <div class="rounded-xl px-12 py-1 cursor-pointer hover:bg-gray-300 rounded-xl"><button onclick="Open('modalDetail')">Detail</button></div>
+                      <div class="rounded-xl px-12 py-1 cursor-pointer hover:bg-gray-300"><a href="/detail/{{ $p->id }}">Detail</a></div>
                     </ul>
                   </div>
             </td>
@@ -174,5 +208,4 @@
     </table>
     {{ $peminjaman->links() }}
   </div>
-    
 @endsection

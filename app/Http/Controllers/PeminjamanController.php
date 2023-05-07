@@ -60,7 +60,8 @@ class PeminjamanController extends Controller
 
     public function historyPeminjaman(){
         $peminjaman = Peminjaman::orderBy('tgl_peminjaman','asc')->simplePaginate(5);
-        return view('admin.history.peminjaman',compact('peminjaman'));
+        $detail = "";
+        return view('admin.history.peminjaman',compact('peminjaman','detail'));
     }
 
     public function search(Request $request){
@@ -79,6 +80,7 @@ class PeminjamanController extends Controller
         
         $bulan = $data['bulan'];
         $filter = Peminjaman::whereMonth('tgl_peminjaman',$bulan)->get();
+        // dd($filter);
         $cetak = PDF::loadview('admin.history.PDFpeminjaman', compact('filter'));
         return $cetak->stream();
     }
@@ -129,7 +131,7 @@ class PeminjamanController extends Controller
             }
     }
 
-    public function kembali($id, Request $request){
+    public function kembali($id_peminjaman, Request $request){
         $data = $request->validate([
             'kondisi' => 'required'
         ]);
@@ -142,7 +144,7 @@ class PeminjamanController extends Controller
                 'status_peminjaman' => 'Dikembalikan',
                 'tgl_kembali' => $now
             ];
-            $peminjaman = Peminjaman::where('id',$id)->first();
+            $peminjaman = Peminjaman::where('id',$id_peminjaman)->first();
 
             $barangDipinjam = $peminjaman->nama_barang;
             $jumlah = $peminjaman->jml_barang_dipinjam;
@@ -162,9 +164,15 @@ class PeminjamanController extends Controller
                 'status_peminjaman' => 'Barang Rusak',
                 'tgl_kembali' => $now
             ];
-            $peminjaman = Peminjaman::where('id',$id)->first();
+            $peminjaman = Peminjaman::where('id',$id_peminjaman)->first();
             $peminjaman->update($update);
             return back();
            }
+    }
+
+    public function detail ($id){
+        $peminjaman = Peminjaman::orderBy('tgl_peminjaman','asc')->simplePaginate(5);
+        $detail = Peminjaman::where('id',$id)->first();
+        return view('admin.history.peminjaman',compact('peminjaman','detail'));
     }
 }

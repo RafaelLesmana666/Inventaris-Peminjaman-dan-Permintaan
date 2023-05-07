@@ -42,8 +42,12 @@
 				<td>{{ $p->ruangan }}</td>
 				<td>{{ $p->nama_guru }}</td>
 				<td>{{ $p->nama_barang }}</td>
-				<td>{{ $p->tgl_peminjaman->toDateString() }}</td>
-				<td>{{ $p->tgl_kembali }}</td>
+				<td>{{ $p->tgl_peminjaman->format('j-F-Y') }}</td>
+				@if( $p->tgl_kembali != "")
+				 <td>{{ $p->tgl_kembali->format('j-F-Y') }}</td> 
+				@else 
+				 <td>{{ $p->tgl_kembali }}</td>
+				@endif
 				<td>{{ $p->status_peminjaman }}</td>
 			</tr>
 			@endforeach
