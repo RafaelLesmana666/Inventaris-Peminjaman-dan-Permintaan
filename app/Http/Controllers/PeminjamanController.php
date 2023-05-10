@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Barang;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use App\Http\Controllers\Controller;
 
 class PeminjamanController extends Controller
@@ -17,7 +18,7 @@ class PeminjamanController extends Controller
         $total = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofDay(), Carbon::now()->endofDay()])->count();
         $dipinjam = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofDay(), Carbon::now()->endofDay()])->where('status_peminjaman','Masih Dipinjam')->count();
         $kembali = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofDay(), Carbon::now()->endofDay()])->where('status_peminjaman','Dikembalikan')->count();
-        $rusak = Peminjaman::where('status_peminjaman','Barang Rusak')->count();
+        $rusak = Peminjaman::where('status_peminjaman','Barang Rusak')->get();
 
         $peminjaman = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofDay(), Carbon::now()->endofDay()])->simplePaginate(4);
         return view('admin.dashboard', compact('total','dipinjam','kembali','peminjaman','title','rusak'));
@@ -28,7 +29,7 @@ class PeminjamanController extends Controller
             $total = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofWeek(), Carbon::now()->endofWeek()])->count();
             $dipinjam = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofWeek(), Carbon::now()->endofWeek()])->where('status_peminjaman','Masih Dipinjam')->count();
             $kembali = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofWeek(), Carbon::now()->endofWeek()])->where('status_peminjaman','Dikembalikan')->count();
-            $rusak = Peminjaman::where('status_peminjaman','Barang Rusak')->count();
+            $rusak = Peminjaman::where('status_peminjaman','Barang Rusak')->get();
 
             $peminjaman = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofWeek(), Carbon::now()->endofWeek()])->simplePaginate(4);
             return view('admin.dashboard', compact('total','dipinjam','kembali','peminjaman','title','rusak'));
@@ -40,7 +41,7 @@ class PeminjamanController extends Controller
             $total = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofMonth(), Carbon::now()->endofMonth()])->count();
             $dipinjam = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofMonth(), Carbon::now()->endofMonth()])->where('status_peminjaman','Masih Dipinjam')->count();
             $kembali = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofMonth(), Carbon::now()->endofMonth()])->where('status_peminjaman','Dikembalikan')->count();
-            $rusak = Peminjaman::where('status_peminjaman','Barang Rusak')->count();
+            $rusak = Peminjaman::where('status_peminjaman','Barang Rusak')->get();
 
             $peminjaman = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofMonth(), Carbon::now()->endofMonth()])->simplePaginate(4);
             return view('admin.dashboard', compact('total','dipinjam','kembali','peminjaman','title','rusak'));
@@ -52,7 +53,7 @@ class PeminjamanController extends Controller
             $total = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofYear(), Carbon::now()->endofYear()])->count();
             $dipinjam = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofYear(), Carbon::now()->endofYear()])->where('status_peminjaman','Masih Dipinjam')->count();
             $kembali = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofYear(), Carbon::now()->endofYear()])->where('status_peminjaman','Dikembalikan')->count();
-            $rusak = Peminjaman::where('status_peminjaman','Barang Rusak')->count();
+            $rusak = Peminjaman::where('status_peminjaman','Barang Rusak')->get();
 
             $peminjaman = Peminjaman::whereBetween('tgl_peminjaman', [Carbon::now()->startofYear(), Carbon::now()->endofYear()])->simplePaginate(4);
             return view('admin.dashboard', compact('total','dipinjam','kembali','peminjaman','title','rusak'));
@@ -69,8 +70,29 @@ class PeminjamanController extends Controller
             'search' => 'required'
         ]);
 
-        $cari = Peminjaman::where('nama_guru',$search)->simplePaginate(5);
-        return view('admin.history.peminjaman',['peminjaman' => $cari]);
+        $peminjaman = Peminjaman::where('nama_guru',$search)->simplePaginate(5);
+        return view('admin.history.peminjaman',compact('peminjaman'));
+    }
+
+    public function filter(Request $request){
+        $filter = $request->validate([
+            'tgl_peminjaman' => 'required',
+            'tgl_kembali' => 'nullable',
+            'status_peminjaman' => 'required',
+        ]);
+
+        $tgl_peminjaman = $filter['tgl_peminjaman'];
+        $tgl_kembali = $filter['tgl_kembali'];
+        $status_peminjaman = $filter['status_peminjaman'];
+        $detail = "";
+
+        if ($tgl_kembali == null){
+            $peminjaman = Peminjaman::where([['tgl_peminjaman',$tgl_peminjaman],['status_peminjaman',$status_peminjaman]])->simplePaginate(5);
+            return view('admin.history.peminjaman',compact('peminjaman','detail'));
+        }else {
+            $peminjaman = Peminjaman::where([['tgl_peminjaman',$tgl_peminjaman],['tgl_kembali',$tgl_kembali],['status_peminjaman',$status_peminjaman]])->simplePaginate(5);
+            return view('admin.history.peminjaman',compact('peminjaman','detail'));
+        } 
     }
     
     public function print(Request $request){
@@ -80,7 +102,6 @@ class PeminjamanController extends Controller
         
         $bulan = $data['bulan'];
         $filter = Peminjaman::whereMonth('tgl_peminjaman',$bulan)->get();
-        // dd($filter);
         $cetak = PDF::loadview('admin.history.PDFpeminjaman', compact('filter'));
         return $cetak->stream();
     }
@@ -172,7 +193,8 @@ class PeminjamanController extends Controller
 
     public function detail ($id){
         $peminjaman = Peminjaman::orderBy('tgl_peminjaman','asc')->simplePaginate(5);
-        $detail = Peminjaman::where('id',$id)->first();
-        return view('admin.history.peminjaman',compact('peminjaman','detail'));
+        $detail = Peminjaman::where('id',$id)->first(); 
+        return view('admin.history.peminjaman',compact('peminjaman','detail')); 
+
     }
 }

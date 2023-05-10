@@ -24,18 +24,20 @@ Route::get('/', function () {
 
 Route::get('/login',[LoginController::class, 'index']);
 Route::post('/login',[LoginController::class, 'authanticate']);
-Route::post('logout',[LoginController::class, 'logout']);
+Route::post('/logout',[LoginController::class, 'logout']);
 
 Route::get('/admin',[PeminjamanController::class, 'index']);
 Route::get('/filterMinggu',[PeminjamanController::class, 'filterMinggu']);
 Route::get('/filterBulan',[PeminjamanController::class, 'filterBulan']);
 Route::get('/filterTahun',[PeminjamanController::class, 'filterTahun']);
+
 Route::get('/peminjaman',[PeminjamanController::class, 'historyPeminjaman']);
 Route::get('/peminjaman/cari',[PeminjamanController::class, 'search']);
-Route::post('/print',[PeminjamanController::class, 'print']);
+Route::get('/peminjaman/filter',[PeminjamanController::class,'filter']);
+Route::post('/peminjaman/print',[PeminjamanController::class, 'print']);
 Route::post('/peminjaman',[PeminjamanController::class, 'store']);
-Route::post('/Dikembalikan/{id_peminjaman}',[PeminjamanController::class, 'kembali']);
-Route::get('/detail/{id}',[PeminjamanController::class, 'detail']);
+Route::post('/peminjaman/dikembalikan/{id_peminjaman}',[PeminjamanController::class, 'kembali']);
+Route::get('/peminjaman?page={current}/detail/{id}',[PeminjamanController::class, 'detail']);
 
 Route::get('/permintaan',[PermintaanController::class, 'index']);
 Route::post('/permintaan',[PermintaanController::class, 'store']);

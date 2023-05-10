@@ -1,11 +1,29 @@
 @extends('layout.admin.index')
 @section('content')
+    {{-- notif  --}}
+            <div id="notif" class="bg-black/50 z-10 w-full h-full absolute left-0 top-0" style="display: none;" onclick="Open('notif')" >
+                <div class="bg-white border border-gray-400 rounded-xl w-auto h-80 py-2 px-4 absolute top-24 right-60 gap-11" >
+                    <h3 class="font-semibold mb-2">Notifikas</h3>
+                    @foreach( $rusak as $r)
+                    <div class="flex flex-col">
+                        <p class="text-sm text-gray-400">{{ $r->tgl_kembali->format('j-F-Y') }}</p>
+                        <p class="w-60"><span class="text-gray-400"> Ada laporan dari </span> Ruang {{ $r->ruangan }} - {{ $r->nama_guru }} </p>
+                    </div>
+                    <a href="/admin/detail" class="bg-blue-600 rounded-3xl py-1 px-3 text-white text-sm">Detail</a>
+                    @endforeach
+                </div>
+           </div>
 
 <div class="ml-10 mt-12 ">
-    <div class="flex gap-10">
+    <div class="flex gap-8">
         <h3 class="text-3xl mr-96">Dashboard</h3>
+        <a class="border border-gray-300 rounded-2xl w-32 h-9 pl-4 pr-4 mt-1.5 pt-1 cursor-pointer bg-white flex" onclick="Open('notif')">
+           <i class='far fa-bell mt-1 mr-1'></i> Notifikasi 
+           
+        </a>
+
         <div class="group inline-block mt-[7px]">
-            <button class="outline-none focus:outline-none border px-3 py-1 bg-white rounded-xl flex items-center min-w-32">
+            <button class="outline-none focus:outline-none border border-gray-300 px-3 py-1 bg-white rounded-xl flex items-center min-w-32">
               <span class="pr-1 flex-1">{{ $title }}</span>
               <span>
                 <svg
@@ -45,9 +63,6 @@
                @endif
             </ul>
           </div>
-        <div class="border border-gray-300 rounded-xl w-28 h-9 pl-4 pr-4 mt-1.5 pt-1 cursor-pointer bg-white">
-            Notifikasi
-        </div>
             <div class="flex flex-row cursor-pointer" onclick="Open('logoutButton')">
                 <img src="/assets/logo.png" alt="logo" class="w-16 h-12 pr-3">
                     <div class="text-left mt-1">
@@ -64,9 +79,9 @@
         </div>
     </div>
     <div class="mt-12 flex gap-10">
-        <a href="" class="bg-white w-24 pt-8 pb-24 px-28 relative rounded-xl">
+        <a href="" class="bg-gray-100 w-24 pt-8 pb-24 px-28 relative rounded-xl">
             <div class="items-center absolute left-3 top-3 flex">
-                <div class="bg-blue-300 w-10 h-10 rounded-xl"></div>
+                <div class="bg-blue-500 w-10 h-10 rounded-xl text-center"><i class='fa fa-share text-white mt-3'></i></div>
                 <div class="ml-3">
                     <p class="w-24 text-xs text-gray-400">{{ $title }}</p>
                     <p class="text-sm">Dipinjamkan</p>
@@ -77,9 +92,9 @@
                 <p class="text-base mt-5 ml-1">Barang</p>
             </div>
         </a>
-        <a href="" class="bg-white w-24 pt-8 pb-24 px-28 relative rounded-xl">
+        <a href="" class="bg-gray-100 w-24 pt-8 pb-24 px-28 relative rounded-xl">
             <div class="items-center absolute left-3 top-3 flex">
-                <div class="bg-blue-300 w-10 h-10 rounded-xl"></div>
+                <div class="bg-blue-500 w-10 h-10 rounded-xl text-center"><i class='far fa-hourglass text-white mt-3'></i></div>
                 <div class="ml-3">
                     <p class="w-24 text-xs text-gray-400">{{ $title }}</p>
                     <p class="text-sm">Dalam Peminjaman</p>
@@ -90,9 +105,9 @@
                 <p class="text-base mt-5 ml-1">Barang</p>
             </div>
         </a>
-        <a href="" class="bg-white w-24 pt-8 pb-24 px-28 relative rounded-xl">
+        <a href="" class="bg-gray-100 w-24 pt-8 pb-24 px-28 relative rounded-xl">
             <div class="items-center absolute left-3 top-3 flex">
-                <div class="bg-blue-300 w-10 h-10 rounded-xl"></div>
+                <div class="bg-blue-500 w-10 h-10 rounded-xl text-center rotate-180"><i class='fas fa-reply text-white -rotate-180 mt-3'></i></div>
                 <div class="ml-3">
                     <p class="w-24 text-xs text-gray-400">{{ $title }}</p>
                     <p class="text-sm">Dikembalikan</p>
@@ -103,22 +118,22 @@
                 <p class="text-base mt-5 ml-1">Barang</p>
             </div>
         </a>
-        <a href="" class="bg-white w-24 pt-8 pb-24 px-28 relative rounded-xl">
+        <a href="" class="bg-gray-100 w-24 pt-8 pb-24 px-28 relative rounded-xl">
             <div class="items-center absolute left-3 top-3 flex">
-                <div class="bg-blue-300 w-10 h-10 rounded-xl"></div>
+                <div class="bg-blue-500 w-10 h-10 rounded-xl text-center"><i class='fas fa-wrench text-white mt-3'></i></div>
                 <div class="ml-3">
                     <p class="w-24 text-xs text-gray-400">Saat ini</p>
                     <p class="text-sm text-red-500">Barang Rusak</p>
                 </div>
             </div>
             <div class="mt-8 flex absolute top-6 right-14">
-                <p class="text-3xl mt-3">{{ $rusak }}</p>
+                <p class="text-3xl mt-3">{{ $rusak->count() }}</p>
                 <p class="text-base mt-5 ml-1">Barang</p>
             </div>
         </a>
     </div>
      <div class="flex gap-9 mt-8">
-        <div class="h-72 w-9/12 rounded-xl pr-4 bg-white">
+        <div class="h-72 w-9/12 rounded-xl pr-4 bg-gray-100">
             <h3 class="ml-8 mt-4 text-sm text-gray-500">{{ $title }}</h3>
             <h4 class="ml-8 ">Status Terbaru</h4>
             <table class="ml-6 mt-2">
@@ -145,7 +160,13 @@
             </table>
             {{ $peminjaman->links() }}
         </div>
-        <div class="bg-white h-72 w-80 rounded-xl"></div>
+        <div class="bg-blue-200 h-72 w-80 rounded-xl">
+            <div class="ml-5 mt-3">
+                <h3>Saat ini</h3>
+                <h2>Kategori Pinjaman</h2>
+            </div>
+            <a class="bg-red-300 w-12 h-12 p-12" onload="chart()"></a>
+        </div>
      </div>
 </div>
     

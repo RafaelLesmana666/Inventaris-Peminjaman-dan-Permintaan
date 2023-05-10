@@ -31,7 +31,7 @@
     </div>
 </div>
 {{-- modal detail  --}}
-@if ( $detail == null)
+@if ( $detail == null )
 @else
 <div id="detail" class="bg-black/50 z-10 w-full h-full absolute">
   <div class="w-1/3 h-9/12 pb-4 pt-4 bg-white absolute top-1/4 left-1/3 rounded-xl">
@@ -76,11 +76,19 @@
         </form>
         <div class="flex flex-col relative">
             <a class="bg-white border border-gray-400 px-8 py-2 rounded-3xl cursor-pointer" onclick="Open('filter');">Filter</a>
-            <div id="filter" style="display: none;" class="bg-white border border-gray-400 rounded-xl w-60 h-80 absolute top-14 right-12">
-                <form action="" class="flex flex-col pt-4 pl-6 gap-2">
+            <div id="filter" style="display: none;" class="bg-white border border-gray-400 rounded-xl w-60 h-[350px] absolute top-14 right-12">
+                <form action="/peminjaman/filter" method="GET" class="pt-4 pl-4">
                     <label for="" class="text-gray-400">Tanggal Dipinjam</label>
-                        <input type="date" class="rounded-2xl border border-gray-300 w-48 h-8 p-2">
-                    <label for="" class="text-gray-400">Jenis Barang</label>
+                        <input type="date" name="tgl_peminjaman" class="rounded-2xl border border-gray-300 w-48 h-8 p-2 my-2">
+                    <label for="" class="text-gray-400">Tanggal Dikembalikan</label>
+                        <input type="date" name="tgl_kembali" class="rounded-2xl border border-gray-300 w-48 h-8 p-2 my-2">
+                    <label for="" class="text-gray-400">Status</label>
+                    <div class="border border-gray-300 rounded-xl pl-2 py-2 w-52"> 
+                        <label>Masih Dipinjam<input type="checkbox" name="status_peminjaman" class="ml-10 mt-1" value="Masih Dipinjam"></label>
+                        <label>Barang Rusak<input type="checkbox" name="status_peminjaman" class="ml-[50px] mt-1" value="Barang Rusak"></label>
+                        <label>Dikembalikan<input type="checkbox" name="status_peminjaman" class="ml-[52px] mt-1" value="Dikembalikan"></label>
+                    </div>   
+                    <button class="px-2 py-1 bg-blue-500 text-white text-sm rounded-xl mt-4">Submit</button>
                 </form>
             </div>
         </div>
@@ -107,7 +115,7 @@
          <div class="flex flex-col relative">
             <a class="bg-white border border-gray-400 px-5 pt-3 pb-2 rounded-3xl cursor-pointer h-12" onclick="Open('pdf')">Print Report</a>
             <div id="pdf" style="display: none" class="bg-white border border-gray-400 rounded-2xl h-44 mt-2 w-60 absolute top-12 right-6 px-3 py-4">
-                <form action="/print" method="post">
+                <form action="/peminjaman/print" method="post">
                     @csrf
                     <h4 class="text-left text-gray-400 mb-4">Bulan</h4>
                         <select name="bulan" id="" class="border border-gray-300 mb-6 rounded-2xl pr-1 pl-2 py-2 w-52 cursor-pointer">
@@ -163,7 +171,7 @@
                       class="bg-white border rounded-xl transform scale-0 group-hover:scale-100 absolute
                     transition duration-150 ease-in-out origin-top min-w-32 right-10 z-10"
                     >
-                      <div class="rounded-xl px-12 py-1 cursor-pointer hover:bg-gray-300"><a href="/detail/{{ $p->id }}">Detail</a></div>
+                      <div class="rounded-xl px-12 py-1 cursor-pointer hover:bg-gray-300"><a href="/peminjaman?page={{ $current }}/detail/{{ $p->id }}">Detail</a></div>
                     </ul>
                   </div>
             </td>
@@ -178,8 +186,8 @@
                       class="bg-white border rounded-xl transform scale-0 group-hover:scale-100 absolute
                     transition duration-150 ease-in-out origin-top min-w-32 right-12 z-10"
                     >
-                      <div class="rounded-sm px-3 py-1 cursor-pointer border-b-0 hover:bg-gray-300 rounded-t-xl"><a href="/detail/{{ $p->id }}">Detail</a></div>
-                      <form method="post" action="/Dikembalikan/{{ $p->id }}" class="flex flex-col">
+                      <div class="rounded-sm px-3 py-1 cursor-pointer border-b-0 hover:bg-gray-300 rounded-t-xl"><a href="/peminjaman?page={{ $current}}/detail/{{ $p->id }}">Detail</a></div>
+                      <form method="post" action="/peminjaman/dikembalikan/{{ $p->id }}" class="flex flex-col">
                         @csrf
                         <input type="submit" name="kondisi"  value="Dikembalikan" class="cursor-pointer border text-green-300 pt-1 px-7 hover:bg-green-300 hover:text-white">
                         <input type="submit" name="kondisi" value="Barang Rusak" class="cursor-pointer  border-y-0 text-red-300 pt-1 px-7 hover:bg-red-300 hover:text-white rounded-b-xl">
@@ -198,7 +206,7 @@
                       class="bg-white border rounded-xl transform scale-0 group-hover:scale-100 absolute
                     transition duration-150 ease-in-out origin-top min-w-32 right-10 z-10"
                     >
-                      <div class="rounded-xl px-12 py-1 cursor-pointer hover:bg-gray-300"><a href="/detail/{{ $p->id }}">Detail</a></div>
+                      <div class="rounded-xl px-12 py-1 cursor-pointer hover:bg-gray-300"><a href="/peminjaman?page={{$current}}/detail/{{ $p->id }}">Detail</a></div>
                     </ul>
                   </div>
             </td>
