@@ -11,13 +11,12 @@ class Permintaan extends Model
     protected $table = 'permintaans';
     protected $fillable = 
     [
-        'nip',
-        'nama_guru',
+        'nama_peminta',
         'nama_barang',
         'tgl_permintaan',
         'jml_barang_diminta',
         'alasan',
-        'id_barang'
+        'kode_barang'
     ];
     protected $dates = ['tgl_permintaan'];
 }

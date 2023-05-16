@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\PeminjamanController;
 use App\Http\Controllers\PermintaanController;
+use App\Http\Controllers\InventarisRuanganController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,11 +38,14 @@ Route::get('/peminjaman/filter',[PeminjamanController::class,'filter']);
 Route::post('/peminjaman/print',[PeminjamanController::class, 'print']);
 Route::post('/peminjaman',[PeminjamanController::class, 'store']);
 Route::post('/peminjaman/dikembalikan/{id_peminjaman}',[PeminjamanController::class, 'kembali']);
-Route::get('/peminjaman?page={current}/detail/{id}',[PeminjamanController::class, 'detail']);
+Route::get('/peminjaman/detail/{id}',[PeminjamanController::class, 'detail']);
+Route::get('/peminjaman/report/{idReport}',[PeminjamanController::class, 'reportView']);
+Route::post('/peminjaman/report/{idReport}',[PeminjamanController::class, 'report']);
 
 Route::get('/permintaan',[PermintaanController::class, 'index']);
 Route::post('/permintaan',[PermintaanController::class, 'store']);
-Route::post('/printPDF',[PermintaanController::class, 'print']);
+Route::get('/permintaan/cari',[PermintaanController::class, 'search']);
+Route::post('/permintaan/print',[PermintaanController::class, 'print']);
 
 Route::get('/inventaris',[BarangController::class, 'inventaris']);
 Route::post('/inventaris',[BarangController::class, 'tambahInventaris']);
@@ -51,9 +55,13 @@ Route::get('/nonInventaris',[BarangController::class, 'noninventaris']);
 Route::post('/nonInventaris',[BarangController::class, 'tambahNonInventaris']);
 Route::get('/nonInventaris/cari',[BarangController::class, 'cariNonInventaris']);
 
-Route::get('/inventarisRuangan',[BarangController::class, 'inventarisRuangan']);
-Route::post('/inventarisRuangan',[BarangController::class, 'tambahInventarisR']);
-Route::get('/inventarisR/cari',[BarangController::class, 'cariInventarisR']);
+Route::get('/inventarisRuangan',[InventarisRuanganController::class, 'index']);
+Route::post('/inventarisRuangan',[InventarisRuanganController::class, 'store']);
+Route::get('/inventarisRuangan/detail/Ruangan={ruang}/{kode_barang}',[InventarisRuanganController::class, 'updateModal']);
+Route::post('/inventarisRuangan/detail/Ruangan={ruang}/{kode_barang}',[InventarisRuanganController::class, 'update']);
+Route::get('/inventarisRuangan/detail/Ruangan={ruangan}',[InventarisRuanganController::class, 'detail']);
+Route::post('/inventarisRuangan/detail/Ruangan={ruangan}',[InventarisRuanganController::class, 'tambah']);
+Route::get('/inventarisRuangan/detail/Ruangan={ruangan}/psrintPDF',[InventarisRuanganController::class, 'print']);
 
 Route::get('/daftarUser',[UserController::class, 'index']);
 Route::post('/tambahUser',[UserController::class, 'store']);

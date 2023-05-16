@@ -1,18 +1,20 @@
 @extends('layout.admin.index')
 @section('content')
     {{-- notif  --}}
-            <div id="notif" class="bg-black/50 z-10 w-full h-full absolute left-0 top-0" style="display: none;" onclick="Open('notif')" >
+            <div id="notif" class="bg-black/50 z-10 w-full h-full absolute left-0 top-0 cursor-pointer" style="display: none;" onclick="Open('notif')" >
                 <div class="bg-white border border-gray-400 rounded-xl w-auto h-80 py-2 px-4 absolute top-24 right-60 gap-11" >
-                    <h3 class="font-semibold mb-2">Notifikas</h3>
+                  <h3 class="font-semibold mb-2">Notifikasi</h3>
                     @foreach( $rusak as $r)
-                    <div class="flex flex-col">
-                        <p class="text-sm text-gray-400">{{ $r->tgl_kembali->format('j-F-Y') }}</p>
-                        <p class="w-60"><span class="text-gray-400"> Ada laporan dari </span> Ruang {{ $r->ruangan }} - {{ $r->nama_guru }} </p>
+                    <div class="my-90">
+                        <div class="flex flex-col my-2">
+                            <p class="text-sm text-gray-400">{{ $r->tgl_kembali->format('j-F-Y') }}</p>
+                            <p class="w-60"><span class="text-gray-400"> Ada laporan dari </span> Ruang {{ $r->ruangan }} - {{ $r->nama_guru }} </p>
+                        </div>
+                        <a href="/admin/detail" class="bg-blue-600 rounded-3xl py-1 px-2 text-white text-sm">Detail</a>
                     </div>
-                    <a href="/admin/detail" class="bg-blue-600 rounded-3xl py-1 px-3 text-white text-sm">Detail</a>
                     @endforeach
                 </div>
-           </div>
+            </div>
 
 <div class="ml-10 mt-12 ">
     <div class="flex gap-8">
@@ -146,7 +148,7 @@
                 @foreach( $peminjaman as $p)
                 <tbody>
                     <td class="px-2 py-1 text-center">{{ $p->id }}</td>
-                    <td class="px-8 py-1">{{ $p->nama_guru }}</td>
+                    <td class="px-8 py-1">{{ $p->nama_peminjam }}</td>
                     <td class="px-8 py-1">{{ $p->nama_barang}}</td>
                     @if ( $p->status_peminjaman == 'Dikembalikan')
                     <td class="px-8 pt-1"><div class="text-center my-1 py-1 px-4 bg-green-200 text-green-400 rounded-2xl text-xs">Dikembalikan</div></td>
@@ -165,7 +167,12 @@
                 <h3>Saat ini</h3>
                 <h2>Kategori Pinjaman</h2>
             </div>
-            <a class="bg-red-300 w-12 h-12 p-12" onload="chart()"></a>
+            {{-- <div class="w-12 h-2 p-2"> --}}
+                {{-- <x-dashboard class="w-12 h-2"> --}}
+                    <div:chart-tile chartFactory="{{App\Charts\recap::class}}" position="a1:a3" /> <div></div>
+                {{-- </x-dashboard> --}}
+            {{-- </div> --}}
+            
         </div>
      </div>
 </div>

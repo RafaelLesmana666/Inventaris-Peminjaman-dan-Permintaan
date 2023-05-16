@@ -7,10 +7,10 @@
             <h3 class="text-lg my-1 font-semibold">Tambah User</h3>
             <label for="username" class="text-gray-400">Username</label>
                 <input type="text" name="username" class="border border-gray-300 w-96 h-10 rounded-lg px-2 py-1">
-            <label for="nip" class="text-gray-400">NIP</label>
-                <input type="number" name="nip" class="border border-gray-300 w-96 h-10 rounded-lg px-2 py-1">
-            <label for="email" class="text-gray-400">Alamat Email</label>
-                <input type="email" name="email" class="border border-gray-300 w-96 h-10 rounded-lg px-2 py-1">
+            {{-- <label for="nip" class="text-gray-400">NIP</label>
+                <input type="number" name="nip" class="border border-gray-300 w-96 h-10 rounded-lg px-2 py-1"> --}}
+            <label for="email" class="text-gray-400">Nama Lengkap</label>
+                <input type="email" name="nama" class="border border-gray-300 w-96 h-10 rounded-lg px-2 py-1">
             <label for="password" class="text-gray-400">Password</label>
                 <input type="password" name="password" class="border border-gray-300 w-96 h-10 rounded-lg px-2 py-1">
             <label for="role" class="text-gray-400">Role</label>
@@ -18,7 +18,6 @@
                     <option class="hidden">Pilih Salah Satu</option>
                     <option value="admin">Admin</option>
                     <option value="teknisi">Teknisi</option>
-                    <option value="guru">Guru</option>
                 </select>
             <div class="flex gap-56 mt-8">
                 <a class="text-red-500 cursor-pointer" onclick="Open('modal')">Kembali</a>
@@ -34,16 +33,6 @@
             @csrf
             <input type="text" name="search" class="border border-gray-400 rounded-3xl pl-6 pr-24 py-2" placeholder="Cari di History">
         </form>
-        <div class="flex flex-col relative">
-            <a class="bg-white border border-gray-400 px-8 py-2 rounded-3xl cursor-pointer" onclick="Open('filter');">Filters</a>
-            <div id="filter" style="display: none;" class="bg-white border border-gray-400 rounded-xl w-60 h-80 absolute top-14 right-12">
-                <form action="" class="flex flex-col pt-4 pl-6 gap-2">
-                    <label for="" class="text-gray-400">Tanggal Dipinjam</label>
-                        <input type="date" class="rounded-2xl border border-gray-300 w-48 h-8 p-2">
-                    <label for="" class="text-gray-400">Jenis Barang</label>
-                </form>
-            </div>
-        </div>
     </div>
     <div class="absolute top-0 right-8 items-end z-0">
         <div class="flex flex-row cursor-pointer justify-end mt-6 mr-10" onclick="Open('logoutButton')">
@@ -69,9 +58,8 @@
     </div>
     <table class="mt-7 rounded-xl">
          <thead class="bg-blue-300">
-            <th class="px-4  py-2 rounded-tl-lg text-left">Username</th>
-            <th class="px-8">NIP</th>
-            <th class="px-8 text-left w-80">Alamat Email</th>
+            <th class="px-4 py-2 rounded-tl-lg text-left">Username</th>
+            <th class="px-4 py-2 text-left">Nama</th>
             <th class="px-8">Tanggal Dibuat</th>
             <th class="px-4">Role</th>
             <th class="px-4 rounded-tr-lg"></th>
@@ -79,8 +67,7 @@
          @foreach( $user as $p)
          <tbody class="bg-gray-200">
             <td class="px-4 py-2 w-72 overflow-hidden whitespace-nowrap text-ellipsis text-left inline-block">{{ $p->username }}</td>
-            <td class="px-8 text-center">{{ $p->nip }}</td>
-            <td class="px-8 w-80 overflow-hidden whitespace-nowrap text-ellipsis text-left inline-block">{{ $p->email }}</td>
+            <td>{{ $p->nama }}</td>
             <td class="px-8 text-center">{{ $p->created_at->format('j-F-Y') }}</td>
             <td class="px-4 text-center">{{ $p->role }}</td>
             <td class="px-4"><a href="">...</a></td>

@@ -1,23 +1,27 @@
 @extends('layout.admin.index')
 @section('content')
 <div id="modal" class="bg-black/50 z-10 w-full h-full absolute" style="display: none">
-    <div class="w-1/3 h-9/12 pb-10 pt-4 bg-white absolute left-1/3 mt-8 rounded-xl">
-        <form method="POST" action="/nonInventaris" class="grid pl-10 gap-1.5" autocomplete="off">
+    <div class="w-1/3 h-9/12 pb-10 pt-1 bg-white absolute left-1/3 mt-2 rounded-xl ">
+        <form method="POST" action="/inventaris" class="grid pl-10 gap-1.5" autocomplete="off">
             @csrf
             <h3 class="text-lg my-4 font-semibold">Tambah Barang</h3>
+            <label for="kode_barang" class="text-gray-400">Kode Barang</label>
+                <input type="text" name="kode_barang" class="border border-gray-300 w-96 h-7 rounded-lg p-2">
             <label for="nama_barang" class="text-gray-400">Nama Barang</label>
                 <input type="text" name="nama_barang" class="border border-gray-300 w-96 h-7 rounded-lg p-2">
-            <label for="merk_barang" class="text-gray-400">Merk Barang</label>
-                <input type="text" name="merk_barang" class="border border-gray-300 w-96 h-7 rounded-lg p-2">
-            <label for="jml_barang" class="text-gray-400">Jumlah Barang</label>
-                <input type="number" name="jml_barang" class="border border-gray-300 w-96 h-7 rounded-lg p-2">
             <label for="kategori_barang" class="text-gray-400">Kategori Barang</label>
-                <select name="kategori_barang" class="border border-gray-300 w-96 h-10 cursor-pointer rounded-lg p-2">
+                <select name="kategori_barang" class="border border-gray-300 w-96 h-10 rounded-lg p-2 cursor-pointer">
                     <option value="Alat Tulis">Alat Tulis</option>
                 </select>
-            <label for="kondisi_barang" class="text-gray-400">Spesifikasi Barang</label>
-                <textarea name="kondisi_barang" class="border border-gray-300 w-96 h-24 rounded-lg mb-4 resize-none p-2"></textarea>
-            <div class="flex gap-56">
+            <label for="satuan" class="text-gray-400">Satuan</label>
+                <select name="satuan" class="border border-gray-300 w-96 h-10 rounded-lg p-2 cursor-pointer">
+                    <option value="Buah">Buah</option>
+                    <option value="Unit">Unit</option>
+                </select>   
+            <label for="jml_barang" class="text-gray-400">Kondisi Barang</label>
+                <input type="number" name="baik" placeholder="Jumlah Barang Baik" class="border border-gray-300 w-96 h-7 rounded-lg p-2">
+                <input type="number" name="rusak" placeholder="Jumlah Barang Rusak" class="border border-gray-300 w-96 h-7 rounded-lg p-2">
+            <div class="flex gap-56 mt-4">
                 <a class="text-red-500 cursor-pointer" onclick="Open('modal')">Kembali</a>
                 <button type="submit" class="w-24 h-8 text-center bg-blue-500 text-white rounded-2xl">Tambah</button>
             </div>
@@ -27,16 +31,16 @@
   <div class="ml-10 mt-9">
     <span class="text-2xl font-semibold mb-7">Daftar Barang - Non Inventaris</span>
     <div class="flex gap-6 mt-12 ">
-        <form action="/nonInventaris/cari" method="GET">
-            <input type="text" name="search" class="border border-gray-400 rounded-3xl pl-6 pr-24 py-2" placeholder="Cari di History">
+        <form action="/inventaris/cari" method="GET">
+            @csrf
+            <input type="text" name="search" class="border border-gray-400 rounded-3xl pl-6 pr-24 py-2" placeholder="Cari Barang">
         </form>
         <div class="flex flex-col relative">
             <a class="bg-white border border-gray-400 px-8 py-2 rounded-3xl cursor-pointer" onclick="Open('filter');">Filters</a>
             <div id="filter" style="display: none;" class="bg-white border border-gray-400 rounded-xl w-60 h-80 absolute top-14 right-12">
                 <form action="" class="flex flex-col pt-4 pl-6 gap-2">
-                    <label for="" class="text-gray-400">Tanggal Dipinjam</label>
-                        <input type="date" class="rounded-2xl border border-gray-300 w-48 h-8 p-2">
-                    <label for="" class="text-gray-400">Jenis Barang</label>
+                    <label for="" class="text-gray-400">Kategori Barang</label>
+                    <input type="checkbox" name="" id="">
                 </form>
             </div>
         </div>
@@ -63,29 +67,37 @@
             <a class="bg-blue-500 text-white border border-gray-200 px-6 py-3 rounded-3xl cursor-pointer" onclick="Open('modal')">Tambah Barang +</a>
       </div>
     </div>
-    <table class="mt-7 text-center rounded-xl">
-        <thead class="bg-blue-300">
-           <th class="px-4 py-2 rounded-tl-lg">kode</th>
-           <th class="px-8">Nama Barang</th>
-           <th class="px-8">Merk Barang</th>
-           <th class="px-8">Kategori Barang</th>
-           <th class="px-4">Stok</th>
-           <th class="pl-8 pr-60">Spesifikasi</th>
-           <th class="px-4 rounded-tr-lg"></th>
-        </thead>
-        @foreach( $barang as $p)
-        <tbody class="bg-gray-200">
-           <td class="py-2.5 rounded-bl-lg">{{ $p->id }}</td>
-           <td>{{ $p->nama_barang }}</td>
-           <td>{{ $p->merk_barang }}</td>
-           <td>{{ $p->kategori_barang }}</td>
-           <td>{{ $p->jml_barang }}</td>
-           <td class="text-left pl-4 w-80 overflow-hidden whitespace-nowrap text-ellipsis inline-block pt-2">{{ $p->kondisi_barang }}</td>
-           <td><a href="">...</a></td>
-        </tbody>
-        @endforeach
-   </table>
-   {{ $barang->links() }}
+    <div class="w-full">
+        <table class="mt-7 text-center rounded-xl">
+            <thead class="bg-blue-300">
+                <th class="w-12 rounded-tl-lg">No</th>
+                <th class="px-4 py-2 w-44">Kode Barang</th>
+                <th class="w-80 text-left">Nama Barang</th>
+                <th class="px-8 w-24">Satuan</th>
+                <th class="px-8">Baik</th>
+                <th class="px-8">Rusak</th>
+                <th class="px-4">Total</th>
+                <th class="px-4 rounded-tr-lg"></th>
+            </thead>
+            @foreach( $barang as $p)
+            <tbody class="bg-gray-200">
+                <td class="py-2.5 w-12">{{ $p->id }}</td>
+                <td class="py-2.5">{{ $p->kode_barang }}</td>
+                <td class="py-2.5 overflow-hidden whitespace-nowrap text-ellipsis inline-block text-left w-80">{{ $p->nama_barang }}</td>
+                <td>{{ $p->satuan }}</td>
+                <td>{{ $p->baik }}</td>
+                @if( $p->rusak == null)
+                <td>0</td>
+                @else
+                <td>{{ $p->rusak }}</td>
+                @endif
+                <td>{{ $p->baik + $p->rusak }}</td>
+                <td><a href="">...</a></td>
+            </tbody>
+            @endforeach
+        </table>
+        {{ $barang->links() }}
+    </div>
   </div>
     
 @endsection

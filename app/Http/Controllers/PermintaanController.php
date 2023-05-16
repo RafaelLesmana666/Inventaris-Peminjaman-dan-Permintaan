@@ -13,7 +13,17 @@ class PermintaanController extends Controller
 {
     public function index(){
         $permintaan = Permintaan::orderBy('id','asc')->simplePaginate(5);
-        return view('admin.history.permintaan', compact('permintaan'));
+        return view('admin.permintaan.index', compact('permintaan'));
+    }
+
+    public function search(Request $request){
+        $data = $request->validate([
+            'search' => 'required'
+        ]);
+
+        $cari = $data['search'];
+        $permintaan = Permintaan::where('nama_peminta', $cari)->simplePaginate(5);;
+        return view('admin.permintaan.index',compact('permintaan'));    
     }
 
     public function print(Request $request){
@@ -23,28 +33,19 @@ class PermintaanController extends Controller
         
         $bulan = $data['bulan'];
         $filter = Permintaan::whereMonth('tgl_permintaan',$bulan)->get();
-        $cetak = PDF::loadview('admin.history.PDFpermintaan', compact('filter'));
+        $cetak = PDF::loadview('admin.permintaan.PDFpermintaan', compact('filter'));
         return $cetak->stream();
     }
 
     public function store(Request $request){
         $data = $request->validate([
-            'nip',
-            'nama_guru' => 'required',
+            'nama_peminta' => 'required',
             'nama_barang' => 'required',
             'tgl_permintaan',
             'jml_barang_diminta' => 'required',
             'alasan' => 'nullable',
-            'id_barang'
+            'kode_barang'
         ]);
-
-        $guru = $data['nama_guru'];
-        $ambilNip = User::where('username', $guru)->first();
-        if ( $ambilNip == null){
-            return back()->with('error','Nama guru belum terdaftar !');
-        }else{
-            $nip = $ambilNip->nip;
-            $data['nip'] = $nip;
             $barang = $data['nama_barang'];
             
             $cekBarang = Barang::where('nama_barang',$barang)->first();
@@ -53,17 +54,17 @@ class PermintaanController extends Controller
             }else {
                 $date = Carbon::now(); 
                 $data['tgl_permintaan'] = $date;
-                $jumlah = $cekBarang->jml_barang;
+                $jumlah = $cekBarang->baik;
                 $kurang = $data['jml_barang_diminta'];
                 $selisih = $jumlah - $kurang;
                 if ( $selisih <= 0 ){
                     return back()->with('error','Stok Tersisa' . $jumlah);
                 }else {
-                        $update = ['jml_barang' => $selisih ];
+                        $update = ['baik' => $selisih ];
                         $cekBarang->update($update);
 
-                        $id = $cekBarang->id;
-                        $data['id_barang'] = $id;
+                        $kode_barang = $cekBarang->kode_barang;
+                        $data['kode_barang'] = $kode_barang;
                         Permintaan::create($data);
                         return back();
                 }
@@ -71,4 +72,3 @@ class PermintaanController extends Controller
         }
 
     }
-}

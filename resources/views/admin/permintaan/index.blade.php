@@ -5,8 +5,8 @@
         <form method="POST" action="/permintaan" class="grid pl-10 gap-2" autocomplete="off">
             @csrf
             <h3 class="text-lg my-4 font-semibold">Permintaan Barang</h3>
-            <label for="nama_guru" class="text-gray-400">Nama Guru</label>
-                <input type="text" name="nama_guru" class="border border-gray-300 w-96 h-7 rounded-lg p-2">
+            <label for="nama_peminta" class="text-gray-400">Nama</label>
+                <input type="text" name="nama_peminta" class="border border-gray-300 w-96 h-7 rounded-lg p-2">
             <label for="nama_barang" class="text-gray-400">Barang apa yang diminta? (Jumlah - Barang)</label>
                 <div class="flex">
                     <input type="text" name="nama_barang" class="border border-gray-300 w-72 h-7 rounded-lg p-2">
@@ -26,26 +26,16 @@
     </div>
 </div>
   <div class="ml-10 mt-9">
-    <span class="text-2xl font-semibold mb-7">History Permintaan</span>
+    <span class="text-2xl font-semibold mb-7">Permintaan Barang </span>
     @if( session('error'))
-      Alert()
-     @else{{ session('error') }}
-     @endif
+      
+    {{ session('error') }}
+   @endif
 
     <div class="flex gap-6 mt-12 ">
         <form action="/permintaan/cari" method="GET">
             <input type="text" name="search" class="border border-gray-400 rounded-3xl pl-6 pr-24 py-2" placeholder="Cari di History">
         </form>
-        <div class="flex flex-col relative">
-            <a class="bg-white border border-gray-400 px-8 py-2 rounded-3xl cursor-pointer" onclick="Open('filter');">Filters</a>
-            <div id="filter" style="display: none;" class="bg-white border border-gray-400 rounded-xl w-60 h-80 absolute top-14 right-12">
-                <form action="" class="flex flex-col pt-4 pl-6 gap-2">
-                    <label for="" class="text-gray-400">Tanggal Diminta</label>
-                        <input type="date" class="rounded-2xl border border-gray-300 w-48 h-8 p-2">
-                    <label for="" class="text-gray-400">Jenis Barang</label>
-                </form>
-            </div>
-        </div>
     </div>
     <div class="absolute top-0 right-8 items-end z-0">
         <div class="flex flex-row cursor-pointer justify-end mt-6 mr-10" onclick="Open('logoutButton')">
@@ -69,7 +59,7 @@
         <div class="flex flex-col relative">
             <a class="bg-white border border-gray-400 px-5 pt-3 pb-2 rounded-3xl cursor-pointer h-12" onclick="Open('pdf')">Print Report</a>
             <div id="pdf" style="display: none" class="bg-white border border-gray-400 rounded-2xl h-44 mt-2 w-60 absolute top-12 right-6 px-3 py-4">
-                <form action="printPDF" method="post">
+                <form action="/permintaan/print" method="post">
                  @csrf
                  <h4 class="text-left text-gray-400 mb-4">Bulan</h4>
                     <select name="bulan" id="pdf" class="border border-gray-300 mb-6 rounded-2xl pr-1 pl-2 py-2 w-52 cursor-pointer">
@@ -95,21 +85,19 @@
     </div>
     <table class="mt-7 text-center rounded-xl">
          <thead class="bg-blue-300">
-            <th class="px-4 py-2 rounded-tl-lg">Nama Guru</th>
+            <th class="px-4 py-2 rounded-tl-lg">Nama Peminta</th>
             <th class="px-6">Barang Diminta</th>
             <th class="px-4">Jumlah Barang</th>
             <th class="px-6">Tanggal Diminta</th>
-            <th class="pl-6 pr-44">Alasan Permintaan</th>
-            <th class="px-4 rounded-tr-lg"></th>
+            <th class="pl-6 pr-44 rounded-tr-lg">Alasan Permintaan</th>
          </thead>
          @foreach( $permintaan as $p)
          <tbody class="bg-gray-200">
-            <td class="px-4 py-2 w-40 overflow-hidden whitespace-nowrap text-ellipsis inline-block">{{ $p->nama_guru }}</td>
+            <td class="px-4 py-2 w-40 overflow-hidden whitespace-nowrap text-ellipsis inline-block">{{ $p->nama_peminta }}</td>
             <td>{{ $p->nama_barang }}</td>
             <td>{{ $p->jml_barang_diminta }}</td>
             <td>{{ $p->tgl_permintaan->format('j-F-Y') }}</td>
             <td class="w-72 overflow-hidden whitespace-nowrap text-ellipsis text-left inline-block">{{ $p->alasan }}</td>
-            <td><a href="">...</a></td>
          </tbody>
          @endforeach
     </table>

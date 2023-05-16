@@ -6,6 +6,7 @@ use \PDF;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Barang;
+use App\Models\Servis;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
@@ -62,7 +63,7 @@ class PeminjamanController extends Controller
     public function historyPeminjaman(){
         $peminjaman = Peminjaman::orderBy('tgl_peminjaman','asc')->simplePaginate(5);
         $detail = "";
-        return view('admin.history.peminjaman',compact('peminjaman','detail'));
+        return view('admin.peminjaman.index',compact('peminjaman','detail'),['idReport' => $detail]);
     }
 
     public function search(Request $request){
@@ -70,8 +71,8 @@ class PeminjamanController extends Controller
             'search' => 'required'
         ]);
 
-        $peminjaman = Peminjaman::where('nama_guru',$search)->simplePaginate(5);
-        return view('admin.history.peminjaman',compact('peminjaman'));
+        $peminjaman = Peminjaman::where('nama_peminjam',$search)->simplePaginate(5);
+        return view('admin.peminjaman.index',compact('peminjaman'));
     }
 
     public function filter(Request $request){
@@ -88,10 +89,10 @@ class PeminjamanController extends Controller
 
         if ($tgl_kembali == null){
             $peminjaman = Peminjaman::where([['tgl_peminjaman',$tgl_peminjaman],['status_peminjaman',$status_peminjaman]])->simplePaginate(5);
-            return view('admin.history.peminjaman',compact('peminjaman','detail'));
+            return view('admin.peminjaman.index',compact('peminjaman','detail'),['idReport' => $detail]);
         }else {
             $peminjaman = Peminjaman::where([['tgl_peminjaman',$tgl_peminjaman],['tgl_kembali',$tgl_kembali],['status_peminjaman',$status_peminjaman]])->simplePaginate(5);
-            return view('admin.history.peminjaman',compact('peminjaman','detail'));
+            return view('admin.peminjaman.index',compact('peminjaman','detail'),['idReport' => $detail]);
         } 
     }
     
@@ -102,55 +103,45 @@ class PeminjamanController extends Controller
         
         $bulan = $data['bulan'];
         $filter = Peminjaman::whereMonth('tgl_peminjaman',$bulan)->get();
-        $cetak = PDF::loadview('admin.history.PDFpeminjaman', compact('filter'));
+        $cetak = PDF::loadview('admin.peminjaman.PDFpeminjaman', compact('filter'));
         return $cetak->stream();
     }
 
     public function store(Request $request){
         $data = $request->validate([
-            'nip',
-            'nama_guru' => 'required',
+            'nama_peminjam' => 'required',
             'nama_barang' => 'required',
             'tgl_peminjaman',
             'tgl_kembali' => 'nullable',
             'jml_barang_dipinjam' => 'required',
-            'id_barang',
+            'kode_barang',
             'status_peminjaman',
-            'keterangan' => 'required',
             'kategori_barang',
             'ruangan' => 'required' 
         ]);
 
-             $guru = $data['nama_guru'];
-             $ambilnip = User::where('username',$guru)->first();
-
-             if ($ambilnip == null){
-                return with('error','nama guru belum terdaftar!');
-             }else{
-                $data['nip'] = $ambilnip->id;
                 $cekbarang = $data['nama_barang'];
                 $stok = Barang::where('nama_barang',$cekbarang)->first();
                 if($stok == null){
                     return with('error','barang tidak tersedia');
                 }else{
                     $data['tgl_peminjaman'] = Carbon::now()->toDateString();
-                    $data['id_barang'] = $stok->id;
+                    $data['kode_barang'] = $stok->kode_barang;
                     $data['status_peminjaman'] = 'Masih Dipinjam';
                     $data['kategori_barang'] = $stok->kategori_barang;
                     $jml = $data['jml_barang_dipinjam'];
-                    $kurang = $stok->jml_barang;
+                    $kurang = $stok->baik;
                     $selisih = $kurang - $jml;
                     if($selisih <= 0){
                         return with('error','stock tersisa ' . $kurang);
                     }else{
-                      $update = [ 'jml_barang' => $selisih]; 
+                      $update = [ 'baik' => $selisih]; 
                       $stok->update($update);
                       Peminjaman::create($data);
                       return back();
                     }
                 }
             }
-    }
 
     public function kembali($id_peminjaman, Request $request){
         $data = $request->validate([
@@ -171,30 +162,60 @@ class PeminjamanController extends Controller
             $jumlah = $peminjaman->jml_barang_dipinjam;
 
             $barang = Barang::where('nama_barang',$barangDipinjam)->first();
-            $stok = $barang->jml_barang;
+            $stok = $barang->baik;
             $stokKembali = $stok + $jumlah;
-            $updateBarang = ['jml_barang' => $stokKembali];
+            $updateBarang = ['jml_barang_dipinjam' => $stokKembali];
             $peminjaman->update($update);
             $barang->update($updateBarang);
 
             return back();
 
            }else{
-            $now = Carbon::now();
-            $update = [
-                'status_peminjaman' => 'Barang Rusak',
-                'tgl_kembali' => $now
-            ];
-            $peminjaman = Peminjaman::where('id',$id_peminjaman)->first();
-            $peminjaman->update($update);
-            return back();
+
            }
     }
 
+    public function reportView($idReport){
+        $peminjaman = Peminjaman::orderBy('tgl_peminjaman','asc')->simplePaginate(5);
+        $idReport = Peminjaman::where('id',$idReport)->first();
+        $detail = '';
+        return view('admin.peminjaman.index',compact('peminjaman','detail','idReport')); 
+
+    }
+
+    public function report($idReport, Request $request){
+        $data = $request->validate([
+            'kendala' => 'required',
+            'foto' => 'nullable'
+        ]);
+        $now = Carbon::now();
+        $update = [
+            'status_peminjaman' => 'Barang Rusak',
+            'tgl_kembali' => $now
+        ];
+        $peminjaman = Peminjaman::where('id',$idReport)->first();
+        $peminjaman->update($update);
+
+        $servis = [
+            'ruangan' => $peminjaman->ruangan,
+            'nama_guru' => $peminjaman->nama_peminjam,
+            'kode_barang' => $peminjaman->kode_barang,
+            'nama_barang' => $peminjaman->nama_barang,
+            'kategori_peminjaman' => 'individu',
+            'status_perbaikan' => 'Request',
+            'kendala' => $data['kendala'],
+            'foto' => $data['foto']
+        ];
+
+        Servis::create($servis);
+        return redirect('/peminjaman');
+       }
+
     public function detail ($id){
         $peminjaman = Peminjaman::orderBy('tgl_peminjaman','asc')->simplePaginate(5);
-        $detail = Peminjaman::where('id',$id)->first(); 
-        return view('admin.history.peminjaman',compact('peminjaman','detail')); 
+        $detail = Peminjaman::where('id',$id)->first();
+        $idReport = '';
+        return view('admin.peminjaman.index',compact('peminjaman','detail','idReport')); 
 
     }
 }

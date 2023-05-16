@@ -18,8 +18,8 @@
 </head>
 <body>
 	<div style="display:flex;flex-direction: row;">
-		<img src="logo.png" style="width:8rem;height:8rem;position: absolute;">
-		<div style="text-align: center;">
+		<img src="logo.png" style="width:5rem;height:5rem;position: absolute;top: 1rem;">
+		<div style="text-align;margin-left: 6rem;">
 			<h2>Laporan Peminjaman Inventaris SMK Wikrama Bogor</h2>
 			<h5>Jl. Raya Wangun, RT.01/RW.06, Sindangsari, Kec. Bogor Tim., Kota Bogor, Jawa Barat 16146</h5>
 		</div>
@@ -28,21 +28,27 @@
 	<table>
 		<thead>
 			<tr>
-				<th>Nama Guru</th>
+				<th>Ruangan</th>
+				<th>Nama Peminjam</th>
 				<th>Nama Barang</th>
-				<th>Jumlah Barang</th>
-				<th>Tanggal Diminta</th>
-				<th>Alasan</th>
+				<th>Tanggal Peminjaman</th>
+				<th>Tanggal Kembali</th>
+				<th>Status</th>
 			</tr>
 		</thead>
 		<tbody>
 			@foreach($filter as $p)
 			<tr>
-				<td>{{ $p->nama_guru }}</td>
+				<td>{{ $p->ruangan }}</td>
+				<td>{{ $p->nama_peminjam }}</td>
 				<td>{{ $p->nama_barang }}</td>
-                <td>{{ $p->jml_barang_diminta }}</td>
-				<td>{{ $p->tgl_permintaan->format('j-F-Y')}}</td>
-				<td>{{ $p->alasan}}</td>
+				<td>{{ $p->tgl_peminjaman->format('j-F-Y') }}</td>
+				@if( $p->tgl_kembali != "")
+				 <td>{{ $p->tgl_kembali->format('j-F-Y') }}</td> 
+				@else 
+				 <td>{{ $p->tgl_kembali }}</td>
+				@endif
+				<td>{{ $p->status_peminjaman }}</td>
 			</tr>
 			@endforeach
 		</tbody>

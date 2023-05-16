@@ -15,15 +15,13 @@ return new class extends Migration
     {
         Schema::create('peminjamans', function (Blueprint $table) {
             $table->id();
-            $table->integer('nip');
-            $table->string('nama_guru');
+            $table->string('nama_peminjam');
             $table->string('nama_barang');
             $table->date('tgl_peminjaman')->format('j-F-Y');
             $table->date('tgl_kembali')->format('j-F-Y')->nullable();
             $table->integer('jml_barang_dipinjam');
-            $table->integer('id_barang');
-            $table->enum('status_peminjaman',['Dikembalikan','Masih Dipinjam','Barang Rusak']);
-            $table->string('keterangan');
+            $table->string('kode_barang');
+            $table->enum('status_peminjaman',['Dikembalikan','Masih Dipinjam','Barang Rusak','Dalam Perbaikan']);
             $table->string('kategori_barang');
             $table->string('ruangan');
             $table->timestamps();
