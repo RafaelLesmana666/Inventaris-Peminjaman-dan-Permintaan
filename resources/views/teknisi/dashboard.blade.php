@@ -2,10 +2,10 @@
 @section('content')
     {{-- notif  --}}
             <div id="notif" class="bg-black/50 z-10 w-full h-full absolute left-0 top-0 cursor-pointer" style="display: none;" onclick="Open('notif')" >
-                <div class="bg-white border border-gray-400 rounded-xl w-80 h-96 py-2 px-4 absolute top-24 right-96 overflow-y-scroll ">
+                <div class="bg-white border border-gray-400 rounded-xl w-80 h-80 py-2 px-4 absolute top-24 right-96 overflow-y-scroll" >
                   <h3 class="font-semibold mb-2">Notifikasi</h3>
-                    @foreach( $notif as $r)
-                     <ul>
+                   @foreach ( $request as $r)
+                    <ul>
                         <li class="my-1">
                             <div class="flex flex-col relative h-40">
                                 <span> Kategori : {{ $r->kategori_peminjaman }}</span>
@@ -13,13 +13,14 @@
                                 <span> Nama : {{ $r->nama_guru }}</span>
                                 <span> Tanggal Rusak : {{ $r->tgl_masuk->format('j-F-Y') }}</span>
                                 <span> Status : {{ $r->status_perbaikan }}</span>
-                                <a class="px-4 py-1 rounded-3xl text-xs text-white bg-blue-300 absolute bottom-0 right-4" href="/admin/detail/{{ $r->id }}">Detail</a>
+                                <a class="px-4 py-1 rounded-3xl text-xs text-white bg-blue-300 absolute bottom-0 right-4" href="/teknisi/detail/{{ $r->id }}">Detail</a>
                             </div>
                         </li>
-                     </ul>
+                    </ul>
                     @endforeach
                 </div>
             </div>
+
     {{-- detail  --}}
     @if ( $detail == null)
     @else
@@ -47,11 +48,11 @@
                          @endif
                      </div>
                      <div class="text-center absolute right-4 bottom-4">
-                        <form action="/admin/detail/{{ $detail->id }}" method="POST">
+                        <form action="/teknisi/detail/{{ $detail->id }}" method="POST">
                             @csrf
                             <button class="bg-blue-400 px-4 py-1 text-white rounded-3xl hover:bg-blue-800">Submit</button> 
                         </form>
-                        <a href="/admin" class="text-red-400 hover:text-red-700">Kembali</a>
+                        <a href="/teknisi" class="text-red-400 hover:text-red-700">Kembali</a>
                      </div>
                   </div>
                 </li>
@@ -59,16 +60,19 @@
         </div>
     </div>
     @endif
+
 <div class="ml-10 mt-12 ">
-    <div class="flex gap-8">
+    <div class="flex gap-8 ">
         <h3 class="text-3xl mr-96">Dashboard</h3>
-        <a class="border border-gray-300 rounded-2xl w-32 h-9 pl-4 pr-4 mt-1.5 pt-1 cursor-pointer bg-white flex relative" onclick="Open('notif')">
+        <a class="border border-gray-300 rounded-3xl w-32 h-9 pl-4 pr-4 mt-1.5 pt-1 cursor-pointer bg-white flex relative" onclick="Open('notif')">
             @if ( $i == null)
+
             @else
             <div class="bg-red-400 p-[6px] rounded-full absolute top-0 right-0 text-xs"></div>
             @endif
-           <i class='far fa-bell mt-1 mr-1'></i> Notifikasi </a>
-         <div class="group inline-block mt-[7px]">
+           <i class='far fa-bell mt-1 mr-1'></i> Notifikasi 
+        </a>
+        {{-- <div class="group inline-block mt-[7px]">
             <button class="outline-none focus:outline-none border border-gray-300 px-3 py-1 bg-white rounded-xl flex items-center min-w-32">
               <span class="pr-1 flex-1">{{ $title }}</span>
               <span>
@@ -88,42 +92,44 @@
             >
               @if ( $title == 'Hari ini')
                 <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100 hidden"><a href="/admin">Hari ini</a></li>
-                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/admin/filterMinggu">Minggu ini</a></li>
-                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/admin/filterBulan">Bulan ini</a></li>
-                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/admin/filterTahun">Tahun ini</a></li>
+                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterMinggu">Minggu ini</a></li>
+                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterBulan">Bulan ini</a></li>
+                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterTahun">Tahun ini</a></li>
               @elseif ( $title == 'Minggu ini')
                 <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/admin">Hari ini</a></li>
-                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100 hidden"><a href="/admin/filterMinggu">Minggu ini</a></li>
-                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/admin/filterBulan">Bulan ini</a></li>
-                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/admin/filterTahun">Tahun ini</a></li>
+                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100 hidden"><a href="/filterMinggu">Minggu ini</a></li>
+                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterBulan">Bulan ini</a></li>
+                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterTahun">Tahun ini</a></li>
                @elseif ( $title == 'Bulan ini')
                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/admin">Hari ini</a></li>
-               <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/admin/filterMinggu">Minggu ini</a></li>
-               <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100 hidden"><a href="/admin/filterBulan">Bulan ini</a></li>
-               <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/admin/filterTahun">Tahun ini</a></li>
+               <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterMinggu">Minggu ini</a></li>
+               <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100 hidden"><a href="/filterBulan">Bulan ini</a></li>
+               <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterTahun">Tahun ini</a></li>
                @else
                <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/admin">Hari ini</a></li>
-               <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/admin/filterMinggu">Minggu ini</a></li>
-               <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/admin/filterBulan">Bulan ini</a></li>
-               <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100 hidden"><a href="/admin/filterTahun">Tahun ini</a></li>
+               <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterMinggu">Minggu ini</a></li>
+               <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100"><a href="/filterBulan">Bulan ini</a></li>
+               <li class="rounded-sm px-3 py-1 cursor-pointer hover:bg-gray-100 hidden"><a href="/filterTahun">Tahun ini</a></li>
                @endif
             </ul>
-          </div>
-          <div class="flex flex-row cursor-pointer" onclick="Open('logoutButton')">
-            <img src="/assets/logo.png" alt="logo" class="w-16 h-12 pr-3">
-                <div class="text-left mt-1">
-                    <div class="text-base text-gray-600 font-semibold">
-                        {{ Auth::user()->username }}
+          </div> --}}
+          <div class="relative">
+            <div class="flex flex-row cursor-pointer" onclick="Open('logoutButton')">
+                <img src="/assets/logo.png" alt="logo" class="w-16 h-12 pr-3">
+                    <div class="text-left mt-1">
+                        <div class="text-base text-gray-600 font-semibold">
+                            {{ Auth::user()->username }}
+                        </div>
+                        <div class="text-xs text-gray-400">
+                            {{ Auth::user()->role }}
+                        </div>
                     </div>
-                    <div class="text-xs text-gray-400">
-                        {{ Auth::user()->role }}
-                    </div>
-                </div>
-        </div>
-          <form action="/logout" method="post">
-            @csrf
-            <button id="logoutButton" style="display: none;" class="bg-white border border-red-400 text-red-400 text-left rounded-lg w-32 h-8 pl-4 pt-1 absolute right-20 top-24 cursor-pointer hover:bg-red-500 hover:text-white">Log out</button>
-        </form>
+            </div>
+            <form action="/logout" method="post">
+                @csrf
+                <button id="logoutButton" style="display: none;" class="bg-white border border-red-400 text-red-400 text-left rounded-lg w-32 h-8 pl-4 pt-1 absolute top-12 cursor-pointer hover:bg-red-500 hover:text-white">Log out</button>
+            </form>
+          </div>    
     </div>
     <div class="mt-12 flex gap-10">
         <a href="" class="bg-gray-100 w-24 pt-8 pb-24 px-28 relative rounded-xl">
@@ -131,11 +137,11 @@
                 <div class="bg-blue-500 w-10 h-10 rounded-xl text-center"><i class='fa fa-share text-white mt-3'></i></div>
                 <div class="ml-3">
                     <p class="w-24 text-xs text-gray-400">{{ $title }}</p>
-                    <p class="text-sm">Dipinjamkan</p>
+                    <p class="text-sm">Request Perbaikan</p>
                 </div>
             </div>
             <div class="mt-8 flex absolute top-6 right-14">
-                <p class="text-3xl mt-3">{{ $total }}</p>
+                <p class="text-3xl mt-3">{{ $request->count() }}</p>
                 <p class="text-base mt-5 ml-1">Barang</p>
             </div>
         </a>
@@ -144,11 +150,11 @@
                 <div class="bg-blue-500 w-10 h-10 rounded-xl text-center"><i class='far fa-hourglass text-white mt-3'></i></div>
                 <div class="ml-3">
                     <p class="w-24 text-xs text-gray-400">{{ $title }}</p>
-                    <p class="text-sm">Dalam Peminjaman</p>
+                    <p class="text-sm">Sedang Diperbaiki</p>
                 </div>
             </div>
             <div class="mt-8 flex absolute top-6 right-14">
-                <p class="text-3xl mt-3">{{ $dipinjam }}</p>
+                <p class="text-3xl mt-3">{{ $sedangDiperbaiki }}</p>
                 <p class="text-base mt-5 ml-1">Barang</p>
             </div>
         </a>
@@ -157,26 +163,24 @@
                 <div class="bg-blue-500 w-10 h-10 rounded-xl text-center rotate-180"><i class='fas fa-reply text-white -rotate-180 mt-3'></i></div>
                 <div class="ml-3">
                     <p class="w-24 text-xs text-gray-400">{{ $title }}</p>
-                    <p class="text-sm">Dikembalikan</p>
+                    <p class="text-sm">Selesai Perbaikan</p>
                 </div>
             </div>
             <div class="mt-8 flex absolute top-6 right-14">
-                <p class="text-3xl mt-3">{{ $kembali + $selesai }}</p>
+                <p class="text-3xl mt-3">{{ $selesai }}</p>
                 <p class="text-base mt-5 ml-1">Barang</p>
             </div>
         </a>
-        <a href="/servis" class="bg-gray-100 w-24 pt-8 pb-24 px-28 relative rounded-xl">
+        <a href="" class="bg-gray-100 w-24 pt-8 pb-24 px-28 relative rounded-xl">
             <div class="items-center absolute left-3 top-3 flex">
                 <div class="bg-blue-500 w-10 h-10 rounded-xl text-center"><i class='fas fa-wrench text-white mt-3'></i></div>
                 <div class="ml-3">
                     <p class="w-24 text-xs text-gray-400">Saat ini</p>
-                    <p class="text-sm text-red-500">Barang Rusak</p>
+                    <p class="text-sm text-green-500">Dikembalikan</p>
                 </div>
             </div>
             <div class="mt-8 flex absolute top-6 right-14">
-                <p class="text-3xl mt-3">
-                    {{ $servis->count() - $selesai}}
-                </p>
+                <p class="text-3xl mt-3">{{ $dikembalikan }}</p>
                 <p class="text-base mt-5 ml-1">Barang</p>
             </div>
         </a>
@@ -188,26 +192,28 @@
             <table class="ml-6 mt-2">
                 <thead class="text-left">
                     <th class="px-2 py-1 text-center">No</th>
-                    <th class="px-8">Nama Peminjam</th>
-                    <th class="px-8">Daftar Barang</th>
+                    <th class="px-8">Nama Lengkap</th>
+                    <th class="px-8">Nama Barang</th>
                     <th class="px-8">Status</th>
                 </thead>
-                @foreach( $peminjaman as $p)
+                @foreach( $servis as $p)
                 <tbody>
                     <td class="px-2 py-1 text-center">{{ $p->id }}</td>
-                    <td class="px-8 py-1">{{ $p->nama_peminjam }}</td>
+                    <td class="px-8 py-1">{{ $p->nama_guru }}</td>
                     <td class="px-8 py-1">{{ $p->nama_barang}}</td>
-                    @if ( $p->status_peminjaman == 'Dikembalikan')
-                    <td class="px-8 pt-1"><div class="text-center my-1 py-1 px-4 bg-green-200 text-green-400 rounded-2xl text-xs">Dikembalikan</div></td>
-                    @elseif ( $p->status_peminjaman == 'Masih Dipinjam')
-                    <td class="px-8 pt-1"><div class="text-center my-1 px-4 mb-1 py-1 bg-blue-200 text-blue-400 rounded-2xl text-xs">Masih Dipinjam</div></td>
+                    @if ( $p->status_perbaikan == 'Request')
+                        <td class="px-8 py-1 w-48"><div class="py-1 bg-amber-700 text-yellow-400 rounded-2xl text-xs text-center">Request</div></td>
+                    @elseif ( $p->status_perbaikan == 'Sedang Diperbaiki')
+                        <td class="px-8 py-1 w-48"><div class="py-1 bg-blue-200 text-blue-400 rounded-2xl text-xs text-center">Sedang Diperbaiki</div></td>
+                    @elseif ( $p->status_perbaikan == 'Selesai Perbaikan')
+                        <td class="px-8 py-1 w-48"><div class="py-1 bg-yellow-200 text-yellow-400 rounded-2xl text-xs text-center">Selesai Diperbaiki</div></td>
                     @else
-                    <td class="px-8 pt-1"><div class="text-center my-1 px-4 py-1 bg-red-200 text-red-400 rounded-2xl text-xs">Barang Rusak</div></td>
+                        <td class="px-8 py-1 w-48"><div class="py-1 bg-green-200 text-green-400 rounded-2xl text-xs text-center">Dikembalikan</div></td>
                     @endif
                 </tbody>
                 @endforeach
             </table>
-            {{ $peminjaman->links() }}
+            {{ $servis->links() }}
         </div>
         <div class="bg-blue-200 h-72 w-80 rounded-xl">
             <div class="ml-5 mt-3">

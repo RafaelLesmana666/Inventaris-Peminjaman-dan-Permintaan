@@ -30,32 +30,37 @@
     <div class="flex gap-6 mt-12 ">
         <form action="/inventarisR/cari" method="GET">
             @csrf
-            <input type="text" name="search" class="border border-gray-400 rounded-3xl pl-6 pr-24 py-2" placeholder="Cari di History">
+            <input type="text" name="search" class="border border-gray-400 rounded-l-3xl pl-6 pr-24 py-2 z-10" placeholder="Cari Ruangan">
+            <button class="rounded-r-3xl border border-gray-400 py-2 px-2"><i class="text-gray-400 fa-solid fa-magnifying-glass"></i></button>
         </form>
+        @if( session('error'))
+        {{ session('error')}}
+        @endif
     </div>
-    <div class="absolute top-0 right-8 items-end z-0">
-        <div class="flex flex-row cursor-pointer justify-end mt-6 mr-10" onclick="Open('logoutButton')">
-            <img src="/assets/logo.png" alt="logo" class="w-16 h-12 pr-3">
-                <div class="text-left mt-1">
-                    <div class="text-base text-gray-600 font-semibold">
-                        {{ Auth::user()->username }}
-                    </div>
-                    <div class="text-xs text-gray-400">
-                        {{ Auth::user()->role }}
-                    </div>
-                </div>
-                <a onclick="Alert()" id="logoutButton" style="display: none;" class="bg-white text-red-400 text-left rounded-lg w-32 h-8 pl-4 pt-1 cursor-pointer hover:bg-red-500 hover:text-white">
-                    Keluar
-                </a>
-        </div>
-        <a onclick="Alert()" id="logoutButton" style="display: none;" class="bg-white text-red-400 text-left rounded-lg w-32 h-8 pl-4 pt-1 cursor-pointer hover:bg-red-500 hover:text-white">
-            Keluar
-        </a>
+    <div class="absolute top-5 right-8 items-end z-0">
+        <div class="flex flex-col">
+            <div class="flex flex-row cursor-pointer" onclick="Open('logoutButton')">
+                 <img src="/assets/logo.png" alt="logo" class="w-16 h-12 pr-3">
+                     <div class="text-left mt-1">
+                         <div class="text-base text-gray-600 font-semibold">
+                             {{ Auth::user()->username }}
+                         </div>
+                         <div class="text-xs text-gray-400">
+                             {{ Auth::user()->role }}
+                         </div>
+                     </div> 
+            </div>
+                     <form action="/logout" method="post">
+                         @csrf
+                         <button id="logoutButton" style="display: none;" class="absolute bg-white border border-red-400 text-red-400 text-left rounded-lg w-32 h-8 pl-4 pt-1 z-10 cursor-pointer hover:bg-red-500 hover:text-white">Log out</button>
+                     </form>
+         </div>
       <div class="mt-14">
             <a class="bg-blue-500 text-white border border-gray-200 px-6 py-3 rounded-3xl cursor-pointer" onclick="Open('modal')">Tambah Barang +</a>
       </div>
     </div>
-    <table class="mt-7 text-center rounded-xl">
+    <div class="w-fit overflow-y-scroll h-80">
+        <table class="mt-7 text-center">
          <thead class="bg-blue-300">
             <th class="px-4 py-2 w-12 rounded-tl-lg">Ruangan</th>
             <th class="w-40 px-4 py-2">Nama Ruangan</th>
@@ -73,6 +78,8 @@
          </tbody>
          @endforeach
     </table>
+    </div>
+    
   </div>
     
 @endsection

@@ -19,7 +19,10 @@ return new class extends Migration
             $table->string('nama_guru');
             $table->string('kode_barang');
             $table->string('nama_barang');
-            $table->enum('kategori_peminjaman',['individu','ruangan']);
+            $table->integer('jumlah');
+            $table->enum('kategori_peminjaman',['Individu','Ruangan']);
+            $table->date('tgl_masuk')->format('j-F-Y');
+            $table->date('tgl_kembali')->format('j-F-Y')->nullable();
             $table->enum('status_perbaikan',['Request','Sedang Diperbaiki','Selesai Perbaikan','Dikembalikan']);
             $table->text('kendala');
             $table->string('foto')->nullable();

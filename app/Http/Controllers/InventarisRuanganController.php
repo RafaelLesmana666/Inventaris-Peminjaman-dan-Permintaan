@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use \PDF;
+use Carbon\Carbon;
 use App\Models\Barang;
 use App\Models\Servis;
-use \PDF;
 use App\Models\Inventaris;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -12,8 +13,20 @@ use App\Http\Controllers\Controller;
 class InventarisRuanganController extends Controller
 {
     public function index(){
+
         $inventarisRuangan = Inventaris::distinct()->get(['ruangan','nama_ruangan','pj_rayon','pj_ruangan']);
         return view('admin.inventarisRuangan.inventarisRuangan',compact('inventarisRuangan'));
+
+    }
+
+    public function search(Request $request){
+        $data = $request->validate([
+            'search' => 'required'
+        ]);
+        $search = $data['search'];
+        $inventarisRuangan = Inventaris::where('ruangan',$search)->distinct()->get(['ruangan','nama_ruangan','pj_rayon','pj_ruangan']);
+        return view('admin.inventarisRuangan.inventarisRuangan',compact('inventarisRuangan'));
+
     }
 
     public function store(Request $request){
@@ -72,8 +85,9 @@ class InventarisRuanganController extends Controller
      
         $inventaris = Inventaris::where('ruangan',$ruangan)->get();
         $nama = Inventaris::where('ruangan', $ruangan)->first();
+        $i = 1;
 
-        $cetak = PDF::loadview('admin.inventarisRuangan.pdf', compact('inventaris','nama'));
+        $cetak = PDF::loadview('admin.inventarisRuangan.pdf', compact('inventaris','nama','i'));
         return $cetak->stream();
 
     }
@@ -106,7 +120,7 @@ class InventarisRuanganController extends Controller
                 $kurang = $barang->baik;
                 $selisih = $kurang - $data['jumlah'];
 
-                if ( $selisih <= 0){
+                if ( $selisih < 0){
 
                     return back()->with('error','Sisa stok tersisa' .  $kurang);
 
@@ -125,9 +139,10 @@ class InventarisRuanganController extends Controller
              }else {
                
                 $stok = $inventaris->baik;
+                $rusak = $inventaris->rusak;
                 $kurang = $stok - $data['jumlah'];
 
-                if ( $kurang <= 0){
+                if ( $kurang < 0){
 
                     return back()->with('error','error');
 
@@ -136,7 +151,7 @@ class InventarisRuanganController extends Controller
                     $update = [
 
                             'baik' => $kurang,
-                            'rusak' => $data['jumlah']
+                            'rusak' => $rusak + $data['jumlah']
                     ];
 
                     $rusak = ['rusak' => $data['jumlah']];
@@ -146,7 +161,9 @@ class InventarisRuanganController extends Controller
                         'nama_guru' => $inventaris->pj_ruangan,
                         'kode_barang' => $kode_barang,
                         'nama_barang' => $inventaris->nama_barang,
-                        'kategori_pinjaman' => 'ruangan',
+                        'kategori_peminjaman' => 'Ruangan',
+                        'jumlah' => $data['jumlah'],
+                        'tgl_masuk' => Carbon::today(),
                         'status_perbaikan' => 'Request',
                         'kendala' => $data['kendala'],
                         'foto' => $data['foto']
@@ -172,7 +189,6 @@ class InventarisRuanganController extends Controller
         ]);
 
         $cekBarang = Barang::where('nama_barang',$data['nama_barang'])->first();
-
         if( $cekBarang == null){
             return back()->with('error','barang tidak ada!');
         }else {
@@ -183,7 +199,7 @@ class InventarisRuanganController extends Controller
                 $jumlah = $data['baik'];
                 $stok = $cekBarang->baik;
                 $selisih = $stok - $jumlah;
-                if ( $selisih <= 0) {
+                if ( $selisih < 0) {
                     return back()->with('error','Stok Tersisa' . $stok);
                 }else{
                     $BarangRuangan = Inventaris::where('ruangan',$ruangan)->first();

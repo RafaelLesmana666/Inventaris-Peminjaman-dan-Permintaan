@@ -23,7 +23,7 @@
 @if( $kode != null)
 <div id="update" class="bg-black/50 z-10 w-full h-full absolute">
     <div class="w-1/3 h-9/12 pb-10 pt-4 bg-white absolute left-1/3 mt-8 rounded-xl">
-        <form method="POST" action="/inventarisRuangan/detail/Ruangan={{ $nama->ruangan }}/{{ $kode->kode_barang }}" class="grid pl-10 gap-1.5" autocomplete="off">
+        <form method="POST" action="/inventarisRuangan/update/Ruangan={{ $nama->ruangan }}/{{ $kode->kode_barang }}" class="grid pl-10 gap-1.5" autocomplete="off" enctype="multipart/form-data>
             @csrf
             <h3 class="text-lg my-4 font-semibold">Update Stok</h3>
             <label for="baik" class="text-gray-400">Jumlah Barang</label>
@@ -49,13 +49,13 @@
 <div class="ml-10 mt-9">
     <h3 class="font-semibold text-xl">Detail Ruangan</h3>
     @if( session('error'))
-        
+        {{ session('error')}}
     @endif
     <div class="absolute right-12">
         <div class="grid grid-cols-3">
-            <button class="bg-blue-300 text-white border border-blue-300 p-2 rounded-l-3xl" onclick="Open('modal')">Tambah</button>
-            <a href="/inventarisRuangan/detail/Ruangan={{ $nama->ruangan }}/printPDF" class="p-2 text-center border border-y-black">PDF</a>
-            <a class="bg-red-600 text-white border border-gray-400 p-2 rounded-r-3xl" href="/inventarisRuangan?page={{ request()->page??1}}"><i class="fa-solid fa-door-open mr-2 "></i>Kembali</a>
+            <button class="bg-blue-300 text-white border border-blue-300 p-2 rounded-l-3xl hover:bg-white hover:text-blue-300" onclick="Open('modal')">Tambah +</button>
+            <a href="/print/{{ $nama->ruangan }}" class="p-2 text-center border border-yellow-400 bg-yellow-400 text-white hover:bg-white hover:text-yellow-400"><i class="fa-solid fa-file mr-2"></i>PDF</a>
+            <a class="bg-red-600 text-white border border-red-600 p-2 rounded-r-3xl hover:bg-white hover:text-red-600" href="/inventarisRuangan?page={{ request()->page??1}}"><i class="fa-solid fa-door-open mr-2 "></i>Kembali</a>
         </div>  
     </div>
     <div class="my-4">
@@ -69,14 +69,19 @@
         <div>
             <table class="text-center">
                 <thead class="bg-sky-200">
-                    <th class="w-12 p-1 rounded-tl-lg">No</th>
-                    <th class="w-44">Kode Barang</th>
-                    <th class="w-48 text-left">Nama Barang</th>
-                    <th class="w-24">Satuan</th>
-                    <th class="w-24">Baik</th>
-                    <th class="w-24">Rusak</th>
-                    <th class="w-44">Total</th>
-                    <th class="rounded-tr-lg w-12"></th>
+                    <tr>
+                        <th class="text-center w-12 p-1 rounded-tl-lg" rowspan="2">No</th>
+                        <th class="w-44" rowspan="2">Kode Barang</th>
+                        <th class="w-48 text-left" rowspan="2">Nama Barang</th>
+                        <th class="w-24" rowspan="2">Satuan</th>
+                        <th class="w-24" colspan="2">Kondisi</th>
+                        <th class="w-44" rowspan="2">Total</th>
+                        <th class="rounded-tr-lg w-12" rowspan="2"></th>
+                    </tr>
+                    <tr>    
+                        <th>Baik</th>
+                        <th>Rusak</th>
+                    </tr>
                 </thead>
                 @foreach( $detail as $p)
                 <tbody class="bg-gray-200">
@@ -91,16 +96,16 @@
                     <td class="w-24">{{ $p->rusak }}</td>
                     @endif
                     <td class="w-44">{{ $p->baik + $p->rusak }}</td>
-                    <td class="text-center w-12"> 
+                    <td class="text-center w-12 relative"> 
                         <div class="group inline-block mt-[7px]">
                         <button class="outline-none focus:outline-none border px-3 py-1 flex items-center min-w-32">
                           <span class="pr-1 flex-1">...</span>
                                 </button>
                                 <ul
-                                class="bg-white border rounded-3xl transform scale-0 group-hover:scale-100 absolute z-10 right-32
+                                class="bg-white border rounded-3xl transform scale-0 group-hover:scale-100 absolute z-10 w-32 right-5
                                 transition duration-150 ease-in-out origin-top min-w-32"
                                 >
-                                <li class="p-2 rounded-3xl hover:bg-gray-300"><a href="/inventarisRuangan/detail/Ruangan={{ $p->ruangan }}/{{ $p->kode_barang }}">Update Stok</a></li>
+                                <li class="p-2 rounded-3xl hover:bg-gray-300"><a href="/inventarisRuangan/update/Ruangan={{ $p->ruangan }}/{{ $p->kode_barang }}">Update Stok</a></li>
                             </ul>
                         </div>
                     </td>

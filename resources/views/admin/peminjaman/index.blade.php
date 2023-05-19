@@ -61,10 +61,10 @@
 @endif
 
 {{-- modal report perbaikan  --}}
-@if($idReport != null)
+@if($idR != null)
 <div id="report" class="bg-black/50 z-10 w-full h-full absolute">
   <div class="w-1/3 h-9/12 pb-4 pt-4 bg-white absolute top-24 left-1/3 rounded-xl">
-    <form action="/peminjaman/report/{{ $idReport }}" class="grid pl-8 gap-2" method="POST" autocomplete="off">
+    <form action="/peminjaman/report/{{ $idR->id }}" class="grid pl-8 gap-2" method="POST" autocomplete="off" enctype="multipart/form-data">
       @csrf
       <h3 class="text-lg mt-4 mb-1 font-semibold">Report Barang Rusak</h3>
       <label for="kendala" class="text-gray-400">Kendala</label>
@@ -84,14 +84,14 @@
 {{-- main kontent --}}
   <div class="ml-10 mt-9">
     <span class="text-2xl font-semibold mb-7">Peminjaman Barang</span>
-    @if( session('error'))
-      
-     {{ session('error') }}
-    @endif
     <div class="flex gap-6 mt-12 ">
         <form action="/peminjaman/cari" method="GET">
-            <input type="text" name="search" class="border border-gray-400 rounded-3xl pl-6 pr-24 py-2" placeholder="Cari di History">
+            <input type="text" name="search" class="border border-gray-400 rounded-l-3xl pl-6 pr-24 py-2 z-10" placeholder="Cari Nama Peminjam">
+            <button class="rounded-r-3xl border border-gray-400 py-2 px-2"><i class="text-gray-400 fa-solid fa-magnifying-glass"></i></button>
         </form>
+        @if( session('error'))
+          {{ session('error')}}
+        @endif
         <div class="flex flex-col relative">
             <a class="bg-white border border-gray-400 px-8 py-2 rounded-3xl cursor-pointer" onclick="Open('filter');">Filter</a>
             <div id="filter" style="display: none;" class="bg-white border border-gray-400 rounded-xl w-60 h-[350px] absolute top-14 right-12">
@@ -111,24 +111,26 @@
             </div>
         </div>
     </div>
-    <div class="absolute top-0 right-8 items-end z-0">
-        <div class="flex flex-row cursor-pointer justify-end mt-6 mr-10" onclick="Open('logoutButton')">
-            <img src="/assets/logo.png" alt="logo" class="w-16 h-12 pr-3">
-                <div class="text-left mt-1">
-                    <div class="text-base text-gray-600 font-semibold">
-                        {{ Auth::user()->username }}
-                    </div>
-                    <div class="text-xs text-gray-400">
-                        {{ Auth::user()->role }}
-                    </div>
-                </div>
-                <a onclick="Alert()" id="logoutButton" style="display: none;" class="bg-white text-red-400 text-left rounded-lg w-32 h-8 pl-4 pt-1 cursor-pointer hover:bg-red-500 hover:text-white">
-                    Keluar
-                </a>
-        </div>
-        <a onclick="Alert()" id="logoutButton" style="display: none;" class="bg-white text-red-400 text-left rounded-lg w-32 h-8 pl-4 pt-1 cursor-pointer hover:bg-red-500 hover:text-white">
-            Keluar
-        </a>
+    <div class="absolute top-6 right-8 items-end z-0">
+      <div class="flex flex-col">
+         <div class="flex flex-row cursor-pointer" onclick="Open('logoutButton')">
+              <img src="/assets/logo.png" alt="logo" class="w-16 h-12 pr-3">
+                  <div class="text-left mt-1">
+                      <div class="text-base text-gray-600 font-semibold">
+                          {{ Auth::user()->username }}
+                      </div>
+                      <div class="text-xs text-gray-400">
+                          {{ Auth::user()->role }}
+                      </div>
+                  </div> 
+         </div>
+                  <form action="/logout" method="post">
+                      @csrf
+                      <button id="logoutButton" style="display: none;" class="absolute bg-white border border-red-400 text-red-400 text-left rounded-lg w-32 h-8 pl-4 pt-1 z-10 cursor-pointer hover:bg-red-500 hover:text-white">Log out</button>
+                  </form>
+      </div>
+      
+   
       <div class="flex gap-6 mt-10">
          <div class="flex flex-col relative">
             <a class="bg-white border border-gray-400 px-5 pt-3 pb-2 rounded-3xl cursor-pointer h-12" onclick="Open('pdf')">Print Report</a>
@@ -180,7 +182,7 @@
             @endif
             @if( $p->status_peminjaman == 'Dikembalikan' )
             <td class="px-8 py-3 w-48"><div class="py-1 bg-green-200 text-green-400 rounded-2xl text-sm">Dikembalikan</div></td>
-            <td class="px-8">
+            <td class="px-8 relative">
                 <div class="group inline-block ">
                     <button class="outline-none focus:outline-none rounded-xl flex items-center min-w-32">
                       <span class="pr-1 flex-1">...</span>
@@ -195,7 +197,7 @@
             </td>
             @elseif ( $p->status_peminjaman == 'Masih Dipinjam')
             <td class="px-8 py-3"><div class="text-xs px-4 py-1 bg-blue-200 text-blue-400 rounded-2xl">Masih Dipinjam</div></td>
-            <td class="px-8 pb-3">
+            <td class="px-8 pb-3 ">
                 <div class="group inline-block mt-[7px]">
                     <button class="outline-none focus:outline-none rounded-xl flex items-center min-w-32">
                       <span class="pr-1 flex-1">...</span>
@@ -209,13 +211,13 @@
                         @csrf
                         <input type="submit" name="kondisi"  value="Dikembalikan" class="cursor-pointer border text-green-300 pt-1 px-7 hover:bg-green-300 hover:text-white">
                       </form>
-                      <a href="peminjaman/report/{{ $p->id }}?page={{ request()->page??1 }}" class="cursor-pointer border-y-0 text-red-300 hover:bg-red-300 hover:text-white hover:pt-1 hover:px-7 rounded-b-xl">Barang Rusak</a>
+                      <a href="peminjaman/report/{{ $p->id }}" class=" w-80 cursor-pointer border-y-0 text-red-300 hover:bg-red-300 hover:text-white hover:pt-1 hover:px-7 rounded-b-xl">Barang Rusak</a>
                     </div>
                   </div>
             </td>
             @elseif( $p->status_peminjaman == 'Barang Rusak')
             <td class="px-8 py-3 w-48"><div class="py-1 bg-red-200 text-red-400 rounded-2xl text-xs">Barang Rusak</div></td>
-            <td class="px-8">
+            <td class="px-8 relative">
                 <div class="group inline-block ">
                     <button class="outline-none focus:outline-none rounded-xl flex items-center min-w-32">
                       <span class="pr-1 flex-1">...</span>

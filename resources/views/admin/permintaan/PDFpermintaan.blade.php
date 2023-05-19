@@ -20,7 +20,7 @@
 	<div style="display:flex;flex-direction: row;">
 		<img src="logo.png" style="width:5rem;height:5rem;position: absolute;top: 1rem;">
 		<div style="text-align;margin-left: 6rem;">
-			<h2>Laporan Peminjaman Inventaris SMK Wikrama Bogor</h2>
+			<h2>Laporan Permintaan Inventaris SMK Wikrama Bogor</h2>
 			<h5>Jl. Raya Wangun, RT.01/RW.06, Sindangsari, Kec. Bogor Tim., Kota Bogor, Jawa Barat 16146</h5>
 		</div>
 	</div>

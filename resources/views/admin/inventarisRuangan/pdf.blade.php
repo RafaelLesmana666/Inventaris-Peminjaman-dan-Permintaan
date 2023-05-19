@@ -1,65 +1,85 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Laporan Peminjaman Inventaris SMK Wikrama Bogor</title>
+	<title>Laporan Inventaris Ruangan SMK Wikrama Bogor</title>
     <style>
+		.info {
+			display: grid;
+			gap: 1px;
+            margin-left: 1px;
+		}
         table {
             text-align: center;
+			border-color: black;
         }
         th {
-            padding: 1rem;
-            border-bottom: 1px solid grey;
-			border-top: 1px solid grey;
+			padding: 1px 1.5rem;
+			font-size: 12px;
+			background-color: gray;
         }
         td {
             padding: 1rem 0.5rem;
         }
+
+		li {
+			list-style: none;
+		}
     </style>
 </head>
 <body>
-	<div style="display:flex;flex-direction: row;">
-		<img src="logo.png" style="width:5rem;height:5rem;position: absolute;top: 1rem;">
-		<div style="text-align;margin-left: 6rem;">
-			<h2>Laporan Peminjaman Inventaris SMK Wikrama Bogor</h2>
-			<h5>Jl. Raya Wangun, RT.01/RW.06, Sindangsari, Kec. Bogor Tim., Kota Bogor, Jawa Barat 16146</h5>
+	<div>
+		<img src="logo.png" style="width:7rem;height:7rem;position: absolute;top: 1rem;">
+		<div style="margin-left: 7rem;">
+			<h2 style="margin-bottom: 0;">SMK Wikrama Bogor</h2>
+			<p style="width: 460px;">
+				Jl. Raya Wangun, RT.01/RW.06, Sindangsari, Kec. Bogor Timur
+				Telp/Fax.(0251)8242411 E-mail: <span style="color: rgb(81, 166, 240);">prohumasi@smkwikrama.net</span>
+				Website: www.smkwikrama.net
+			</p>
+			
 		</div>
 	</div>
-	<hr style="margin-bottom: 2.5rem;">
-    <div class="my-4">
-        <ul>
-            <li>No Ruang : {{ $nama->ruangan }}</li>
-            <li>Nama Ruangan : {{ $nama->nama_ruangan }}</li>
-            <li>Nama Penanggung Jawab Rayon : {{ $nama->pj_rayon }}</li>
-            <li>Nama Penanggung Jawab Ruangan : {{ $nama->pj_ruangan }}</li>
-        </ul>
+	<div style="height: 1.5rem;background-color: gray;text-align:center">Daftar Inventaris Ruangan</div>
+	<div class="body-wrapper">
+    <div class="info">
+            <p>No Ruang : {{ $nama->ruangan }}</p>
+            <p>Nama Ruangan : {{ $nama->nama_ruangan }}</p>
+            <p>Nama Penanggung Jawab Rayon : {{ $nama->pj_rayon }}</p>
+            <p>Nama Penanggung Jawab Ruangan : {{ $nama->pj_ruangan }}</p>
     </div>
-	<table>
+	<table border-color="black" border="1">
 		<thead>
 			<tr>
-				<th>Ruangan</th>
-				<th>Nama Barang</th>
-				<th>Nama Barang</th>
-				<th>Tanggal Peminjaman</th>
-				<th>Tanggal Kembali</th>
-				<th>Status</th>
+				<th rowspan="2" style="width: 44px;padding: 1px 6px;">No</th>
+				<th rowspan="2" style="width: 80px;padding: 1px 24px;">kode Barang</th>
+				<th rowspan="2" style="width: 200px;padding: 1px 6px;">Nama Barang</th>
+				<th rowspan="2" style="width: 10px;padding: 1px 6px;">Satuan</th>
+				<th colspan="2">Kondisi</th>
+				<th rowspan="2" scope="width: 500px;padding: 0 500px;">Total</th>
+			</tr>
+			<tr>
+				<th>Baik</th>
+				<th>Rusak</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach($filter as $p)
+			@foreach($inventaris as $p)
 			<tr>
-				<td>{{ $p->ruangan }}</td>
-				<td>{{ $p->nama_peminjam }}</td>
+				<td>{{ $i++ }}</td>
+				<td>{{ $p->kode_barang }}</td>
 				<td>{{ $p->nama_barang }}</td>
-				<td>{{ $p->tgl_peminjaman->format('j-F-Y') }}</td>
-				@if( $p->tgl_kembali != "")
-				 <td>{{ $p->tgl_kembali->format('j-F-Y') }}</td> 
-				@else 
-				 <td>{{ $p->tgl_kembali }}</td>
+				<td>{{ $p->satuan }}</td>
+				<td>{{ $p->baik }}</td>
+				@if ( $p->rusak == null)
+				<td>0</td>
+				@else
+				<td>{{ $p->rusak }}</td>
 				@endif
-				<td>{{ $p->status_peminjaman }}</td>
+				<td>{{ $p->baik + $p->rusak }}</td>
 			</tr>
 			@endforeach
 		</tbody>
 	</table>
+	</div>
 </body>
 </html>

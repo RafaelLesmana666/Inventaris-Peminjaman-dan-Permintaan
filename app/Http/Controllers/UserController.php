@@ -16,13 +16,12 @@ class UserController extends Controller
     public function store(Request $request){
         $data = $request->validate([
             'username' => 'required',
-            'nip' => 'required|unique:users',
-            'email' => 'required|email',
+            'nama' => 'required',
             'password' => 'required',
             'role' => 'required'
         ]);
 
-        $data['passoword'] = bcrypt($data['password']);
+        $data['password'] = bcrypt($data['password']);
         User::create($data);
 
         return back();
